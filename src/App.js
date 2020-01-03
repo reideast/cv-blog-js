@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+
 class App extends Component {
     constructor(props) {
         super(props);
@@ -9,7 +11,8 @@ class App extends Component {
     }
 
     callApi() {
-        fetch("http://localhost:9000/testApi")
+        console.log('About to fetch from API, URL=', REACT_APP_API_URL);  // DEBUG
+        fetch(REACT_APP_API_URL + "/testApi")
             .then(res => res.text())
             .then(res => this.setState({ apiResponse: res }))
             .catch(err => err);
