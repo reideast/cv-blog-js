@@ -13,7 +13,12 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
-### `npm start`
+### Linux: `REACT_APP_API_URL='http://localhost:9000 npm start`
+### Windows PowerShell: `($env:REACT_APP_API_URL='http://localhost:9000') -and (npm start)`
+- n.b. This workaround actual persists an environment variable for this shell session
+
+For info on how create-react-app processes env, see: [Adding Custom Environment Variables
+](https://create-react-app.dev/docs/adding-custom-environment-variables/)
 
 Runs the app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
