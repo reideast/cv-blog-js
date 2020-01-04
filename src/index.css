@@ -10,26 +10,56 @@
 .cv-grid-container {
     display: grid;
 
-    grid-template-columns: 2fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr;
-    grid-template-areas:
-        "name photo"
-        "work about"
-        "work education"
-        "community skills";
+    min-height: 100vh;
+    width: 100vw;
 
     grid-gap: 5px;
+    box-shadow: 0 5px 9px 0 rgba(0, 0, 0, 0.35);
 
-    width: 80vw;
-    height: 100vh;
-
-    box-shadow: 0 5px 9px 0 rgba(0,0,0,0.35);
+    grid-template-columns: 1fr;
+    grid-template-areas:
+            "photo"
+            "name"
+            "about"
+            "work"
+            "education"
+            "skills"
+            "community";
 }
 
 .cv-grid-section {
     padding: 1em;
     border: 1px black solid;
 }
+@media (min-width: 900px) {
+    .cv-grid-container {
+        grid-template-columns: 2fr 1fr;
+        grid-template-areas:
+                "name photo"
+                "about about"
+                "work work"
+                "education education"
+                "skills skills"
+                "community community";
+
+        width: 100vw;
+        min-height: 100vh;
+    }
+}
+@media (min-width: 1200px) {
+    .cv-grid-container {
+        grid-template-columns: 2fr 1fr;
+        grid-template-areas:
+                "name photo"
+                "work about"
+                "work education"
+                "community skills";
+
+        width: 80vw;
+        min-height: 100vh;
+    }
+}
+
 .cv-grid-section-name {
     grid-area: name;
 }
