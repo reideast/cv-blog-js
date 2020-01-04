@@ -88,6 +88,15 @@
     grid-area: skills;
 }
 
+/* API status messages */
+.api-failure {
+    color: darkred;
+}
+.api-success {
+    color: inherit;
+}
+
+
 /* Original create-react-app styles */
 body {
     margin: 0;

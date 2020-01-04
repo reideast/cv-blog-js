@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 // import logo from './logo.svg';
 import './App.css';
 
+global.fetch = require('node-fetch');
+
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
 class App extends Component {
@@ -75,15 +77,21 @@ class CV extends Component {
 class TestApi extends Component {
     constructor(props) {
         super(props);
-        this.state = { apiResponse: "" };
+        this.state = {
+            apiResponse: 'API connecting',
+            apiStatusClass: 'api-failure'
+        };
     }
 
     callApi() {
         console.log('About to fetch from API, URL=', REACT_APP_API_URL);  // DEBUG
         fetch(REACT_APP_API_URL + "/testApi")
             .then(res => res.text())
-            .then(res => this.setState({ apiResponse: res }))
-            .catch(err => err);
+            .then(res => this.setState({ apiResponse: res, apiStatusClass: 'api-success' }))
+            .catch(err => {
+                console.log("TestAPI fetch failure", err)
+                this.setState({ apiResponse: 'API connection failed', apiStatusClass: 'api-failure' })
+            });
     }
 
     componentDidMount() {
@@ -92,8 +100,8 @@ class TestApi extends Component {
 
     render() {
         return (
-            <div>
-                <p className="App-intro">{ this.state.apiResponse }</p>
+            <div className={ this.state.apiStatusClass }>
+                <p>{ this.state.apiResponse }</p>
             </div>
         );
     }
