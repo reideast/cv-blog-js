@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
