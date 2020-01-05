@@ -83,18 +83,22 @@ class TestApi extends Component {
         };
     }
 
-    callApi() {
-        console.log('About to fetch from API, URL=', REACT_APP_API_URL);  // DEBUG
-        fetch(REACT_APP_API_URL + "/testApi")
-            .then(res => res.text())
-            .then(res => this.setState({ apiResponse: res, apiStatusClass: 'api-success' }))
-            .catch(err => {
-                console.log("TestAPI fetch failure", err)
-                this.setState({ apiResponse: 'API connection failed', apiStatusClass: 'api-failure' })
-            });
+    async callApi() {
+        try {
+            console.log('About to fetch from API, URL=', REACT_APP_API_URL);  // DEBUG
+            const res = await fetch(REACT_APP_API_URL + "/testApi");
+            if (res.status >= 400) {
+                throw new Error("API Failure");
+            }
+            const result = await res.text();
+            this.setState({ apiResponse: result, apiStatusClass: 'api-success' })
+        } catch (err) {
+            console.log("TestAPI fetch failure", err)
+            this.setState({ apiResponse: 'API connection failed', apiStatusClass: 'api-failure' })
+        }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this.callApi();
     }
 
