@@ -13,14 +13,15 @@ import { TestApi } from '../TestApi';
 
 configure({ adapter: new Adapter() }); // Global test config TODO: should be in its own file
 
+// Mock method, see: https://medium.com/@manastunga/unit-testing-api-calls-in-react-enzyme-and-jest-133b87aaacb4
 beforeAll(() => {
-    global.fetch = jest.fn();
+    global.fetch = jest.fn(); // So that it can be used with mockImplementation()
 });
 
 let wrapper;
 
 beforeEach(() => {
-    wrapper = shallow(<TestApi />, { disableLifecycleMethods: true });
+    wrapper = shallow(<TestApi />, { disableLifecycleMethods: true }); // disableLifecycleMethods required to avoid letting test object rendered prematurely call them
 });
 
 afterEach(() => {
@@ -28,15 +29,13 @@ afterEach(() => {
 });
 
 it('renders API loading message', () => {
-    // const { getByText } = render(<TestApi />);
-    // const testAPIElem = getByText(/Loading.../i);
-    // expect(testAPIElem).toBeInTheDocument();
-    console.log(wrapper);
-    expect(wrapper.find('#api-test-result').length).toBe(1);
-    // expect(wrapper.find("p#api-test-result").exists()).toBeTruthy();
+    const testApiElem = wrapper.find('#api-test-result');
+    expect(testApiElem.length).toBe(1); // Element found
+    expect(testApiElem.text()).toContain('Loading'); // Text displayed
+    expect(testApiElem.hasClass('api-failure')).toBeTruthy(); // className in list
 });
 
-it('renders API results', (done) => {
+it('renders API results', (testIsDone) => {
     // const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
     // const scope = nock(REACT_APP_API_URL)
     //     .get('/testApi')
@@ -50,8 +49,6 @@ it('renders API results', (done) => {
     // const testAPIElem = getByText(/API is responding/i);
     // expect(testAPIElem).toBeInTheDocument();
 
-    const spyDidMount = jest.spyOn(TestApi.prototype, 'componentDidMount');
-
     fetch.mockImplementation(() => {
         return Promise.resolve({
             status: 200,
@@ -59,20 +56,21 @@ it('renders API results', (done) => {
                 return Promise.resolve('API is responding');
             }
         });
-    })
+    });
 
+    const spyDidMount = jest.spyOn(TestApi.prototype, 'componentDidMount');
     const didMount = wrapper.instance().componentDidMount();
-
     expect(spyDidMount).toHaveBeenCalled();
-
     didMount.then(() => {
-        wrapper.update(); // Instruct React to update
+        wrapper.update(); // Instruct React to update elements
 
-        expect(wrapper.find("#api-test-result").text()).toContain('API is responding');
+        const testApiElem = wrapper.find("#api-test-result");
+        expect(testApiElem.text()).toContain('API is responding');
+        expect(testApiElem.hasClass('api-success')).toBeTruthy(); // className in list
 
         spyDidMount.mockRestore();
         fetch.mockClear();
-        done();
+        testIsDone();
     });
 });
 

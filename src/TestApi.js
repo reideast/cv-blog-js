@@ -7,7 +7,7 @@ export class TestApi extends Component {
         super(props);
         this.state = {
             apiResponse: null,
-            apiStatusClass: 'api-failure'
+            apiStatusSuccess: false
         };
     }
 
@@ -19,16 +19,16 @@ export class TestApi extends Component {
                 throw new Error('API Failure');
             }
             const result = await res.text();
-            this.setState({ apiResponse: result, apiStatusClass: 'api-success' });
+            this.setState({ apiResponse: result, apiStatusSuccess: true });
         } catch (err) {
             console.log('TestAPI fetch failure', err);
-            this.setState({ apiResponse: 'API connection failed', apiStatusClass: 'api-failure' });
+            this.setState({ apiResponse: 'API connection failed', apiStatusSuccess: false });
         }
     }
 
     render() {
         return (
-            <div id='api-test-result' className={this.state.apiStatusClass}>
+            <div id='api-test-result' className={this.state.apiStatusSuccess ? 'api-success' : 'api-failure'}>
                 <p>{this.state.apiResponse || 'Loading...'}</p>
             </div>
         );
