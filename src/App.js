@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 // import logo from './logo.svg';
 import './App.css';
+import { TestApi } from './TestApi';
 
 global.fetch = require('node-fetch');
-
-const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
 class App extends Component {
     constructor(props) {
@@ -71,43 +70,6 @@ class CV extends Component {
                 </article>
             </main>
         )
-    }
-}
-
-class TestApi extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            apiResponse: undefined,
-            apiStatusClass: 'api-failure'
-        };
-    }
-
-    async callApi() {
-        try {
-            console.log('About to fetch from API, URL=', REACT_APP_API_URL);  // DEBUG
-            const res = await fetch(REACT_APP_API_URL + "/testApi");
-            if (res.status >= 400) {
-                throw new Error("API Failure");
-            }
-            const result = await res.text();
-            this.setState({ apiResponse: result, apiStatusClass: 'api-success' })
-        } catch (err) {
-            console.log("TestAPI fetch failure", err)
-            this.setState({ apiResponse: 'API connection failed', apiStatusClass: 'api-failure' })
-        }
-    }
-
-    async componentDidMount() {
-        this.callApi();
-    }
-
-    render() {
-        return (
-            <div className={ this.state.apiStatusClass }>
-                <p>{ this.state.apiResponse || 'Loading...' }</p>
-            </div>
-        );
     }
 }
 
