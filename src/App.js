@@ -78,7 +78,7 @@ class TestApi extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            apiResponse: 'API connecting',
+            apiResponse: undefined,
             apiStatusClass: 'api-failure'
         };
     }
@@ -105,7 +105,7 @@ class TestApi extends Component {
     render() {
         return (
             <div className={ this.state.apiStatusClass }>
-                <p>{ this.state.apiResponse }</p>
+                <p>{ this.state.apiResponse || 'Loading...' }</p>
             </div>
         );
     }
