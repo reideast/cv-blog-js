@@ -1,6 +1,6 @@
 
 /* CV CSS Grid styles, see: https://css-tricks.com/new-year-new-job-lets-make-a-grid-powered-resume/ */
-.wrapper {
+#cv-wrapper {
     padding: 0;
     display: flex;
     flex-direction: row;
