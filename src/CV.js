@@ -23,7 +23,7 @@ export class CV extends Component {
     }
 }
 
-class CVName extends Component {
+export class CVName extends Component {
     render() {
         return <section className='cv-grid-section-name cv-grid-section'>
             <hr />
