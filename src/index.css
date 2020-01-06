@@ -1,13 +1,112 @@
+
+/* CV CSS Grid styles, see: https://css-tricks.com/new-year-new-job-lets-make-a-grid-powered-resume/ */
+#cv-wrapper {
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.cv-grid-container {
+    display: grid;
+
+    width: 100vw;
+
+    grid-gap: 5px;
+    box-shadow: 0 5px 9px 0 rgba(0, 0, 0, 0.35);
+
+    grid-template-columns: 1fr;
+    grid-template-areas:
+            "photo"
+            "name"
+            "about"
+            "work"
+            "education"
+            "skills"
+            "community";
+}
+
+.cv-photo {
+    width: 200px;
+    height: 200px;
+}
+
+.cv-grid-section {
+    padding: 1em;
+    border: 1px black solid;
+}
+@media (min-width: 900px) {
+    .cv-grid-container {
+        grid-template-columns: 2fr 1fr;
+        grid-template-areas:
+                "name photo"
+                "about about"
+                "work work"
+                "education education"
+                "skills skills"
+                "community community";
+
+        width: 100vw;
+    }
+}
+@media (min-width: 1200px) {
+    .cv-grid-container {
+        grid-template-columns: 2fr 1fr;
+        grid-template-areas:
+                "name photo"
+                "work about"
+                "work education"
+                "skills community ";
+
+        width: 80vw;
+    }
+}
+
+.cv-grid-section-name {
+    grid-area: name;
+}
+.cv-grid-section-photo {
+    grid-area: photo;
+}
+.img-circle {
+    border-radius: 50%;
+}
+.cv-grid-section-about {
+    grid-area: about;
+}
+.cv-grid-section-work {
+    grid-area: work;
+}
+.cv-grid-section-education {
+    grid-area: education;
+}
+.cv-grid-section-community {
+    grid-area: community;
+}
+.cv-grid-section-skills {
+    grid-area: skills;
+}
+
+/* API status messages */
+.api-failure {
+    color: darkred;
+}
+.api-success {
+    color: inherit;
+}
+
+
+/* Original create-react-app styles */
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
