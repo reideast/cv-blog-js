@@ -10,7 +10,6 @@
 .cv-grid-container {
     display: grid;
 
-    min-height: 100vh;
     width: 100vw;
 
     grid-gap: 5px;
@@ -25,6 +24,11 @@
             "education"
             "skills"
             "community";
+}
+
+.cv-photo {
+    width: 200px;
+    height: 200px;
 }
 
 .cv-grid-section {
@@ -43,7 +47,6 @@
                 "community community";
 
         width: 100vw;
-        min-height: 100vh;
     }
 }
 @media (min-width: 1200px) {
@@ -53,10 +56,9 @@
                 "name photo"
                 "work about"
                 "work education"
-                "community skills";
+                "skills community ";
 
         width: 80vw;
-        min-height: 100vh;
     }
 }
 
@@ -66,11 +68,8 @@
 .cv-grid-section-photo {
     grid-area: photo;
 }
-.circle {
+.img-circle {
     border-radius: 50%;
-    border: 1px solid black;
-    height: 100px;
-    width: 100px;
 }
 .cv-grid-section-about {
     grid-area: about;
