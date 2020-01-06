@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 
+// Resume/CV using CSS Grid, see: https://css-tricks.com/new-year-new-job-lets-make-a-grid-powered-resume/
 export class CV extends Component {
     constructor(props) {
         super(props);
@@ -123,60 +124,66 @@ class CVWorkExperience extends Component {
 
 class CVEducation extends Component {
     render() {
-        return <section className='cv-grid-section-education cv-grid-section'>
-            <h2>Education</h2>
-            <dl>
-                <dt>Bachelor of Science (Honours), Computer Science</dt>
-                <dd>
-                    <ul>
-                        <li>National University of Ireland, Galway</li>
-                        <li>2016-2019</li>
-                    </ul>
-                </dd>
-                <dt>Associate of Science, Computer Science</dt>
-                <dd>
-                    <ul>
-                        <li>Riverside City College</li>
-                        <li>2014-2015</li>
-                    </ul>
-                </dd>
-            </dl>
-        </section>;
+        return (
+            <section className='cv-grid-section-education cv-grid-section'>
+                <h2>Education</h2>
+                <dl>
+                    <dt>Bachelor of Science (Honours), Computer Science</dt>
+                    <dd>
+                        <ul>
+                            <li>National University of Ireland, Galway</li>
+                            <li>2016-2019</li>
+                        </ul>
+                    </dd>
+                    <dt>Associate of Science, Computer Science</dt>
+                    <dd>
+                        <ul>
+                            <li>Riverside City College</li>
+                            <li>2014-2015</li>
+                        </ul>
+                    </dd>
+                </dl>
+            </section>
+        );
     }
 }
 
 class CVCommunity extends Component {
     render() {
-        return <section className='cv-grid-section-community cv-grid-section'>
-            <hr />
-            <hr />
-        </section>;
+        return (
+            <section className='cv-grid-section-community cv-grid-section'>
+                <hr />
+                <hr />
+            </section>
+        );
     }
 }
 
 class CVSkills extends Component {
     render() {
-        return <section className='cv-grid-section-skills cv-grid-section'>
-            <h2>Technical Skills</h2>
-            <dl>
-                <dt>Programming Languages</dt>
-                <dd>
-                    <ul>
-                        <li>Java</li>
-                        <li>JavaScript</li>
-                        <li>Python</li>
-                        <li>React</li>
-                        <li>TypeScript</li>
-                        <li>Node.js</li>
-                        <li>HTML</li>
-                        <li>CSS</li>
-                        <li>PostgreSQL</li>
-                        <li>C</li>
-                        <li>bash</li>
-                    </ul>
-                </dd>
-                <dt></dt>
-            </dl>
-        </section>;
+        return (
+            <section className='cv-grid-section-skills cv-grid-section'>
+                <h2>Technical Skills</h2>
+                <dl>
+                    <dt>Programming Languages</dt>
+                    <dd>
+                        <ul>
+                            <li>Java</li>
+                            <li>JavaScript</li>
+                            <li>Python</li>
+                            <li>React</li>
+                            <li>TypeScript</li>
+                            <li>Node.js</li>
+                            <li>HTML</li>
+                            <li>CSS</li>
+                            <li>PostgreSQL</li>
+                            <li>C</li>
+                            <li>bash</li>
+                        </ul>
+                    </dd>
+                    <dt></dt>
+                </dl>
+            </section>
+        );
     }
 }
