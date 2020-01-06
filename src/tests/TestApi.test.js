@@ -1,8 +1,3 @@
-// Global test config TODO: should be in its own file
-import { configure } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-
-
 import React from 'react';
 // import { render } from '@testing-library/react';
 import { shallow, mount, render } from 'enzyme';
@@ -10,8 +5,6 @@ import { shallow, mount, render } from 'enzyme';
 import { TestApi } from '../TestApi';
 // import nock from 'nock';
 // nock.disableNetConnect();
-
-configure({ adapter: new Adapter() }); // Global test config TODO: should be in its own file
 
 // Mock method, see: https://medium.com/@manastunga/unit-testing-api-calls-in-react-enzyme-and-jest-133b87aaacb4
 beforeAll(() => {
