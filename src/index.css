@@ -35,6 +35,36 @@
     padding: 1em;
     border: 1px black solid;
 }
+
+.cv-grid-section dl {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-auto-flow: row;
+}
+
+.cv-grid-section dt {
+    border: 1px solid red;
+    /*grid-area: primary;*/
+}
+
+.cv-grid-section dd {
+    border: 1px solid blue;
+    /*grid-area: secondary;*/
+    margin-inline-start: 0;
+}
+
+.cv-grid-section dd h3 {
+    border: 1px solid green;
+}
+
+.cv-grid-section dd ul {
+    border: 1px solid purple;
+}
+
+.cv-grid-section dd li {
+    border: 1px solid teal;
+}
+
 @media (min-width: 900px) {
     .cv-grid-container {
         grid-template-columns: 2fr 1fr;
