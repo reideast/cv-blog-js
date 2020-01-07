@@ -71,6 +71,3 @@
 - https://cv-blog-js.herokuapp.com/
 - Connect to GitHub, authorise on this repo
 - Enable auto-deploy for all commits to master
-- Configured Heroku's [vanilla Node buildpack](https://elements.heroku.com/buildpacks/heroku/heroku-buildpack-nodejs) for the Express app
-- Configured [create-react-app-buildpack](https://github.com/mars/create-react-app-buildpack) for React app
-    - Static deployment via [create-react-app deploy](https://create-react-app.dev/docs/deployment/)
