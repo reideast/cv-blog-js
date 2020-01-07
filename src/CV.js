@@ -60,59 +60,59 @@ class CVWorkExperience extends Component {
             <section className='cv-grid-section-work cv-grid-section'>
                 <h2>Work Experience</h2>
                 <dl>
-                    <dt>IBM</dt>
+                    <dt>2019-Current</dt>
                     <dd>
+                        <h3>IBM</h3>
+                        <h4>Software Engineer</h4>
                         <ul>
-                            <li>Software Engineer</li>
-                            <li>2019-Current</li>
                             <li>Galway, Ireland</li>
                         </ul>
                     </dd>
-                    <dt>IBM</dt>
+                    <dt>2018-2019</dt>
                     <dd>
+                        <h3>IBM</h3>
+                        <h4>Software Engineering Intern</h4>
                         <ul>
-                            <li>Software Engineering Intern</li>
-                            <li>2018-2019</li>
                             <li>Galway, Ireland</li>
                         </ul>
                     </dd>
-                    <dt>Tech Data</dt>
+                    <dt>2012-2015</dt>
                     <dd>
+                        <h3>Tech Data</h3>
+                        <h4>Quality Assurance Technician II</h4>
                         <ul>
-                            <li>Quality Assurance Technician II</li>
-                            <li>2012-2015</li>
                             <li>California, United States</li>
                         </ul>
                     </dd>
-                    <dt>Office Depot, Inc.</dt>
+                    <dt>2009-2012</dt>
                     <dd>
+                        <h3>Office Depot, Inc.</h3>
+                        <h4>Customer Services Specialist II</h4>
                         <ul>
-                            <li>Customer Services Specialist II</li>
-                            <li>2009-2012</li>
                             <li>California, United States</li>
                         </ul>
                     </dd>
-                    <dt>Circuit City</dt>
+                    <dt>2007-2009</dt>
                     <dd>
+                        <h3>Circuit City</h3>
+                        <h4>Lead PC Technician</h4>
                         <ul>
-                            <li>Lead PC Technician</li>
-                            <li>2007-2009</li>
                             <li>California, United States</li>
                         </ul>
                     </dd>
-                    <dt>CompUSA</dt>
+                    <dt>2005-2007</dt>
                     <dd>
+                        <h3>CompUSA</h3>
+                        <h4>Service Writer</h4>
                         <ul>
-                            <li>Service Writer</li>
-                            <li>2005-2007</li>
                             <li>California, United States</li>
                         </ul>
                     </dd>
-                    <dt>San Diego Zoological Society's Wild Animal Park</dt>
+                    <dt>2003-2004</dt>
                     <dd>
+                        <h3>San Diego Zoological Society's Wild Animal Park</h3>
+                        <h4>Visitor Assistance Officer</h4>
                         <ul>
-                            <li>Visitor Assistance Officer</li>
-                            <li>2003-2004</li>
                             <li>California, United States</li>
                         </ul>
                     </dd>
@@ -128,18 +128,18 @@ class CVEducation extends Component {
             <section className='cv-grid-section-education cv-grid-section'>
                 <h2>Education</h2>
                 <dl>
-                    <dt>Bachelor of Science (Honours), Computer Science</dt>
+                    <dt>2016-2019</dt>
                     <dd>
+                        <h3>Bachelor of Science (Honours), Computer Science</h3>
+                        <h4>National University of Ireland, Galway</h4>
                         <ul>
-                            <li>National University of Ireland, Galway</li>
-                            <li>2016-2019</li>
                         </ul>
                     </dd>
-                    <dt>Associate of Science, Computer Science</dt>
+                    <dt>2014-2015</dt>
                     <dd>
+                        <h3>Associate of Science, Computer Science</h3>
+                        <h4>Riverside City College</h4>
                         <ul>
-                            <li>Riverside City College</li>
-                            <li>2014-2015</li>
                         </ul>
                     </dd>
                 </dl>
@@ -181,7 +181,39 @@ class CVSkills extends Component {
                             <li>bash</li>
                         </ul>
                     </dd>
-                    <dt></dt>
+                    <dt>Coding tools</dt>
+                    <dd>
+                        <ul>
+                            <li>git</li>
+                            <li>vim</li>
+                            <li>AWS</li>
+                            <li>IntelliJ</li>
+                            <li>Gradle</li>
+                            <li>Jira</li>
+                        </ul>
+                    </dd>
+                    <dt>IT Systems Admin</dt>
+                    <dd>
+                        <ul>
+                            <li>Windows 10,8,7,XP</li>
+                            <li>Windows Server 2012</li>
+                            <li>RHEL</li>
+                            <li>CentOS</li>
+                            <li>Cisco hardware & IOS</li>
+                            <li>Rack-mount server hardware</li>
+                        </ul>
+                    </dd>
+                    <dt>Office Skills</dt>
+                    <dd>
+                        <ul>
+                            <li>Excel</li>
+                            <li>Access</li>
+                            <li>Publisher</li>
+                            <li>Word</li>
+                            <li>Visio</li>
+                            <li>Typing 80 WPM</li>
+                        </ul>
+                    </dd>
                 </dl>
             </section>
         );
