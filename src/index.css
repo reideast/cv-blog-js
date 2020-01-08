@@ -51,12 +51,17 @@
     margin-inline-start: 0;
 }
 
+cv-date-circa, cv-location,
 cv-degree, cv-school,
 cv-company, cv-job-title {
     display: inline-block;
     margin-block-start: 0;
     margin-block-end: 0;
     padding: 3px;
+}
+
+cv-location {
+    font-style: italic;
 }
 
 .cv-grid-section dd cv-degree,

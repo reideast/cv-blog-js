@@ -60,60 +60,67 @@ class CVWorkExperience extends Component {
             <section className='cv-grid-section-work cv-grid-section'>
                 <h2>Work Experience</h2>
                 <dl>
-                    <dt>2019-Current</dt>
+                    <dt><cv-date-circa>2019-Current</cv-date-circa></dt>
                     <dd>
                         <cv-company>IBM</cv-company>
                         <cv-job-title>Software Engineer</cv-job-title>
+                        <cv-location>Galway, Ireland</cv-location>
                         <ul>
-                            <li>Galway, Ireland</li>
+                            <li></li>
                         </ul>
                     </dd>
-                    <dt>2018-2019</dt>
+                    <dt><cv-date-circa>2018-2019</cv-date-circa></dt>
                     <dd>
                         <cv-company>IBM</cv-company>
                         <cv-job-title>Software Engineering Intern</cv-job-title>
+                        <cv-location>Galway, Ireland</cv-location>
                         <ul>
-                            <li>Galway, Ireland</li>
+                            <li></li>
                         </ul>
                     </dd>
-                    <dt>2012-2015</dt>
+                    <dt><cv-date-circa>2012-2015</cv-date-circa></dt>
                     <dd>
                         <cv-company>Tech Data</cv-company>
                         <cv-job-title>Quality Assurance Technician II</cv-job-title>
+                        <cv-location>California, United States</cv-location>
                         <ul>
-                            <li>California, United States</li>
+                            <li></li>
                         </ul>
                     </dd>
-                    <dt>2009-2012</dt>
+                    <dt><cv-date-circa>2009-2012</cv-date-circa></dt>
                     <dd>
                         <cv-company>Office Depot, Inc.</cv-company>
                         <cv-job-title>Customer Services Specialist II</cv-job-title>
+                        <cv-location>California, United States</cv-location>
                         <ul>
-                            <li>California, United States</li>
+                            <li></li>
                         </ul>
                     </dd>
-                    <dt>2007-2009</dt>
+                    <dt><cv-date-circa>2007-2009</cv-date-circa></dt>
                     <dd>
                         <cv-company>Circuit City</cv-company>
                         <cv-job-title>Lead PC Technician</cv-job-title>
+                        <cv-location>California, United States</cv-location>
                         <ul>
-                            <li>California, United States</li>
+                            <li></li>
                         </ul>
                     </dd>
-                    <dt>2005-2007</dt>
+                    <dt><cv-date-circa>2005-2007</cv-date-circa></dt>
                     <dd>
                         <cv-company>CompUSA</cv-company>
                         <cv-job-title>Service Writer</cv-job-title>
+                        <cv-location>California, United States</cv-location>
                         <ul>
-                            <li>California, United States</li>
+                            <li></li>
                         </ul>
                     </dd>
-                    <dt>2003-2004</dt>
+                    <dt><cv-date-circa>2003-2004</cv-date-circa></dt>
                     <dd>
                         <cv-company>San Diego Zoological Society's Wild Animal Park</cv-company>
                         <cv-job-title>Visitor Assistance Officer</cv-job-title>
+                        <cv-location>California, United States</cv-location>
                         <ul>
-                            <li>California, United States</li>
+                            <li></li>
                         </ul>
                     </dd>
                 </dl>
@@ -128,18 +135,22 @@ class CVEducation extends Component {
             <section className='cv-grid-section-education cv-grid-section'>
                 <h2>Education</h2>
                 <dl>
-                    <dt>2016-2019</dt>
+                    <dt><cv-date-circa>2016-2019</cv-date-circa></dt>
                     <dd>
                         <cv-degree>Bachelor of Science (Honours), Computer Science</cv-degree>
                         <cv-school>National University of Ireland, Galway</cv-school>
+                        <cv-location>Galway, Ireland</cv-location>
                         <ul>
+                            <li></li>
                         </ul>
                     </dd>
-                    <dt>2014-2015</dt>
+                    <dt><cv-date-circa>2014-2015</cv-date-circa></dt>
                     <dd>
                         <cv-degree>Associate of Science, Computer Science</cv-degree>
                         <cv-school>Riverside City College</cv-school>
+                        <cv-location>California, United States</cv-location>
                         <ul>
+                            <li></li>
                         </ul>
                     </dd>
                 </dl>
