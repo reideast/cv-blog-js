@@ -51,8 +51,22 @@
     margin-inline-start: 0;
 }
 
-.cv-grid-section dd h3 {
+cv-degree, cv-school,
+cv-company, cv-job-title {
+    display: inline-block;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    padding: 3px;
+}
+
+.cv-grid-section dd cv-degree,
+.cv-grid-section dd cv-company {
     border: 1px solid green;
+}
+
+.cv-grid-section dd cv-school,
+.cv-grid-section dd cv-job-title {
+    border: 1px solid gray;
 }
 
 .cv-grid-section dd ul {

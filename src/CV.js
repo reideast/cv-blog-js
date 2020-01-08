@@ -62,56 +62,56 @@ class CVWorkExperience extends Component {
                 <dl>
                     <dt>2019-Current</dt>
                     <dd>
-                        <h3>IBM</h3>
-                        <h4>Software Engineer</h4>
+                        <cv-company>IBM</cv-company>
+                        <cv-job-title>Software Engineer</cv-job-title>
                         <ul>
                             <li>Galway, Ireland</li>
                         </ul>
                     </dd>
                     <dt>2018-2019</dt>
                     <dd>
-                        <h3>IBM</h3>
-                        <h4>Software Engineering Intern</h4>
+                        <cv-company>IBM</cv-company>
+                        <cv-job-title>Software Engineering Intern</cv-job-title>
                         <ul>
                             <li>Galway, Ireland</li>
                         </ul>
                     </dd>
                     <dt>2012-2015</dt>
                     <dd>
-                        <h3>Tech Data</h3>
-                        <h4>Quality Assurance Technician II</h4>
+                        <cv-company>Tech Data</cv-company>
+                        <cv-job-title>Quality Assurance Technician II</cv-job-title>
                         <ul>
                             <li>California, United States</li>
                         </ul>
                     </dd>
                     <dt>2009-2012</dt>
                     <dd>
-                        <h3>Office Depot, Inc.</h3>
-                        <h4>Customer Services Specialist II</h4>
+                        <cv-company>Office Depot, Inc.</cv-company>
+                        <cv-job-title>Customer Services Specialist II</cv-job-title>
                         <ul>
                             <li>California, United States</li>
                         </ul>
                     </dd>
                     <dt>2007-2009</dt>
                     <dd>
-                        <h3>Circuit City</h3>
-                        <h4>Lead PC Technician</h4>
+                        <cv-company>Circuit City</cv-company>
+                        <cv-job-title>Lead PC Technician</cv-job-title>
                         <ul>
                             <li>California, United States</li>
                         </ul>
                     </dd>
                     <dt>2005-2007</dt>
                     <dd>
-                        <h3>CompUSA</h3>
-                        <h4>Service Writer</h4>
+                        <cv-company>CompUSA</cv-company>
+                        <cv-job-title>Service Writer</cv-job-title>
                         <ul>
                             <li>California, United States</li>
                         </ul>
                     </dd>
                     <dt>2003-2004</dt>
                     <dd>
-                        <h3>San Diego Zoological Society's Wild Animal Park</h3>
-                        <h4>Visitor Assistance Officer</h4>
+                        <cv-company>San Diego Zoological Society's Wild Animal Park</cv-company>
+                        <cv-job-title>Visitor Assistance Officer</cv-job-title>
                         <ul>
                             <li>California, United States</li>
                         </ul>
@@ -130,15 +130,15 @@ class CVEducation extends Component {
                 <dl>
                     <dt>2016-2019</dt>
                     <dd>
-                        <h3>Bachelor of Science (Honours), Computer Science</h3>
-                        <h4>National University of Ireland, Galway</h4>
+                        <cv-degree>Bachelor of Science (Honours), Computer Science</cv-degree>
+                        <cv-school>National University of Ireland, Galway</cv-school>
                         <ul>
                         </ul>
                     </dd>
                     <dt>2014-2015</dt>
                     <dd>
-                        <h3>Associate of Science, Computer Science</h3>
-                        <h4>Riverside City College</h4>
+                        <cv-degree>Associate of Science, Computer Science</cv-degree>
+                        <cv-school>Riverside City College</cv-school>
                         <ul>
                         </ul>
                     </dd>
