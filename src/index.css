@@ -38,23 +38,40 @@
 
 .cv-grid-section dl {
     display: grid;
-    grid-template-columns: 1fr 4fr;
+    grid-template-columns: 1fr;
     grid-auto-flow: row;
 }
 
 .cv-grid-section dt {
     border: 1px solid red;
-    /*grid-area: primary;*/
 }
 
 .cv-grid-section dd {
     border: 1px solid blue;
-    /*grid-area: secondary;*/
     margin-inline-start: 0;
 }
 
-.cv-grid-section dd h3 {
+cv-date-circa, cv-location,
+cv-degree, cv-school,
+cv-company, cv-job-title {
+    display: inline-block;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    padding: 3px;
+}
+
+cv-location {
+    font-style: italic;
+}
+
+.cv-grid-section dd cv-degree,
+.cv-grid-section dd cv-company {
     border: 1px solid green;
+}
+
+.cv-grid-section dd cv-school,
+.cv-grid-section dd cv-job-title {
+    border: 1px solid gray;
 }
 
 .cv-grid-section dd ul {
@@ -63,6 +80,14 @@
 
 .cv-grid-section dd li {
     border: 1px solid teal;
+}
+
+@media (min-width: 515px) {
+    .cv-grid-section dl {
+        display: grid;
+        grid-template-columns: 1fr 4fr;
+        grid-auto-flow: row;
+    }
 }
 
 @media (min-width: 900px) {
@@ -78,6 +103,12 @@
 
         width: 100vw;
     }
+
+    .cv-grid-section dl {
+        display: grid;
+        grid-template-columns: 1fr 4fr;
+        grid-auto-flow: row;
+    }
 }
 @media (min-width: 1200px) {
     .cv-grid-container {
@@ -89,6 +120,12 @@
                 "skills community ";
 
         width: 80vw;
+    }
+
+    .cv-grid-section dl {
+        display: grid;
+        grid-template-columns: 1fr 4fr;
+        grid-auto-flow: row;
     }
 }
 
