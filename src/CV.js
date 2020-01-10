@@ -40,13 +40,13 @@ class CVContactHeader extends Component {
         return (
             <div>
                 <cv-contacts>
-                    <cv-email><!--icon:email-->andrew@andreweast.net</cv-email>
-                    <cv-location><!--icon:globe/location-->Galway, Ireland</cv-location>
-                    <cv-web-portfolio><!--icon:email-->andreweast.net/portfolio</cv-web-portfolio>
-                    <cv-web-github><!--icon:github-->github.com/reideast</cv-web-github>
-                    <cv-web-linkedin><!--icon:linkedin-->linkedin.com/in/andrewreideast</cv-web-linkedin>
-                    <cv-web-twitter><!--icon:twitter-->deskase</cv-web-twitter>
-                    <cv-web-aboutme><!--icon:aboutme-->andrewreideast</cv-web-aboutme>
+                    <cv-email>{/* icon:email */}andrew@andreweast.net</cv-email>
+                    <cv-location>{/* icon:globe/location */}Galway, Ireland</cv-location>
+                    <cv-web-portfolio>{/* icon:email */}andreweast.net/portfolio</cv-web-portfolio>
+                    <cv-web-github>{/* icon:github */}github.com/reideast</cv-web-github>
+                    <cv-web-linkedin>{/* icon:linkedin */}linkedin.com/in/andrewreideast</cv-web-linkedin>
+                    <cv-web-twitter>{/* icon:twitter */}deskase</cv-web-twitter>
+                    <cv-web-aboutme>{/* icon:aboutme */}andrewreideast</cv-web-aboutme>
                 </cv-contacts>
             </div>
         );
@@ -182,7 +182,7 @@ class CVEducation extends Component {
                         <cv-degree>Bachelor of Science (Honours), Computer Science</cv-degree>
                         <cv-school>National University of Ireland, Galway</cv-school>
                         <cv-location>Galway, Ireland</cv-location>
-                        <cv-thesis><!--icon:github-->Thesis Project: Genetic algorithm to schedule a timetable using machine learning in Java EE presented as a React app deployed to AWS, EC2, and an RDS Postgres database</cv-thesis>
+                        <cv-thesis>{/* icon:github */}Thesis Project: Genetic algorithm to schedule a timetable using machine learning in Java EE presented as a React app deployed to AWS, EC2, and an RDS Postgres database</cv-thesis>
                         <cv-grades>First-class Honours: overall marks 90.18% (A+ equivalent)</cv-grades>
                         <ul>
                             <li>Java Data Structures & Algorithms A</li>
@@ -199,7 +199,7 @@ class CVEducation extends Component {
                         <cv-degree>Associate of Science, Computer Science</cv-degree>
                         <cv-school>Riverside City College</cv-school>
                         <cv-location>California, United States</cv-location>
-                        <cv-thesis><!--icon:github-->Dean’s List Honours: (Overall 97.8%)</cv-thesis>
+                        <cv-thesis>{/* icon:github */}Dean's List Honours: (Overall 97.8%)</cv-thesis>
                         <cv-grades>Searchable database web app in PHP and MySQL</cv-grades>
                         <ul>
                             <li>Systems Analysis</li>
@@ -217,28 +217,28 @@ class CVEducation extends Component {
     }
 }
 
-class CVProjects extends Component {
-    render() {
-        // TODO: This is not used, nor is it placed in the Grid via CSS
-        return (
-            <section className='cv-grid-section-community cv-grid-section'>
-                <h2>Technical Projects</h2>
-                <dl>
-                    <dt>Media upload and collaboration app in JavaScript, continuous integration on Travis CI</dt>
-                    <dd>TODO link<!--icon:github--></dd>
-                    <dt>Professional portfolio website for client using responsive Bootstrap</dt>
-                    <dd>TODO link<!--icon:github--></dd>
-                    <dt>Content management system built using vanilla PHP</dt>
-                    <dd>TODO link<!--icon:github--></dd>
-                    <dt>Interactive games for online design boot camp in JavaScript</dt>
-                    <dd>TODO link<!--icon:github--></dd>
-                    <dt>Wedding RSVP website with user management backend in PHP</dt>
-                    <dd>TODO link<!--icon:github--></dd>
-                </dl>
-            </section>
-        );
-    }
-}
+// class CVProjects extends Component {
+//     render() {
+//         // TODO: This is not used, nor is it placed in the Grid via CSS
+//         return (
+//             <section className='cv-grid-section-community cv-grid-section'>
+//                 <h2>Technical Projects</h2>
+//                 <dl>
+//                     <dt>Media upload and collaboration app in JavaScript, continuous integration on Travis CI</dt>
+//                     <dd>TODO link{/* icon:github */}</dd>
+//                     <dt>Professional portfolio website for client using responsive Bootstrap</dt>
+//                     <dd>TODO link{/* icon:github */}</dd>
+//                     <dt>Content management system built using vanilla PHP</dt>
+//                     <dd>TODO link{/* icon:github */}</dd>
+//                     <dt>Interactive games for online design boot camp in JavaScript</dt>
+//                     <dd>TODO link{/* icon:github */}</dd>
+//                     <dt>Wedding RSVP website with user management backend in PHP</dt>
+//                     <dd>TODO link{/* icon:github */}</dd>
+//                 </dl>
+//             </section>
+//         );
+//     }
+// }
 
 /*
 Hobbies
