@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { CV } from './CV';
 import { TestApi } from './TestApi';
+import { ReactMainConcepts } from './ReactMainConcepts'; // DEBUG
 import './App.css';
 
 // import logo from './logo.svg';
@@ -14,6 +15,7 @@ class App extends Component {
     render() {
         return (
             <div>
+                <ReactMainConcepts/>
                 <CV/>
                 <TestApi/>
             </div>
