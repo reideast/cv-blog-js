@@ -59,6 +59,24 @@ export class ReactMainConcepts extends Component {
         // Sometimes, needed: measure DOM node to get size or position
     }
 
+    notesOnSetState() {
+        // setState(updater[, callback])
+        // Enqueues changes to state
+        // A re-render is triggered (sometime! it's a request not a immediate invocation of render(),etc.)
+        //
+        // Used to update the GUI in response to event handlers and server responses
+        //
+        // Beware of reading this.state synchronously after you call setState(). It may not update until later
+        // Instead, either deal with changed state in componentDidUpdate() (recommended) or use the optional callback in setState(updater, [callback])
+        //
+        // updater: a function `(state, props) => stateChange`
+        // Within this function, consider state to be immutable (and props, as anywhere)
+        // Returned object is *shallow* merged with current state
+        //
+        // Could also just pass an object to setState (if you don't need any logic, since you don't have previous state)
+        // Beware: These are batched differently than when using the updater method, and subsequent state updates of the same property can overwrite previous
+    }
+
     componentDidUpdate(prevProps, prevState, snapshot) {
         // Whenever updated (but not for the initial render)
         // Can operate on DOM in response to a the component updating
