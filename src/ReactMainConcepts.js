@@ -15,6 +15,8 @@ export class ReactMainConcepts extends Component {
     // Error during rendering or lifecycle or thrown error from child method's constructor()
     //     1. static getDerivedStateFromError()
     //     2 componentDidCatch()
+    // Triggered:
+    //     - componentDidUpdate()
     //
     // Common API methods:
     //     setState()
@@ -25,6 +27,31 @@ export class ReactMainConcepts extends Component {
     // Instance Properties: props, state
     //
     // ClassProperties: defaultProps, displayName
+
+    constructor(props) {
+        super(props); // Required! Boilerplate JavaScript
+        // Constructor is typically used for:
+        //     1. Init state, see: https://reactjs.org/docs/state-and-lifecycle.html
+        //     2. Binding event handlers to methods in this instance, see: https://reactjs.org/docs/handling-events.html
+        //
+        // Setting state in constructor:
+        //     `this.state = { ... }; <-- Don't use setState(), use that in other methods
+        //     Don't copy props into state, rather use props directly: `this.setState = { foo: props.foo };` <-- ONLY use if you're intending to store the initial value of the prop
+        //         See: https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html
+    }
+
+    componentDidMount() {
+        // Invoked immediately after component mounted into DOM, so DOM is available
+        // Often used to instantiate a network request (ajax/fetch)
+        // Set up subscriptions, which are unsubscribed in componentWillUnmount()
+        //
+        // Setting state
+        // If you call setState(), it triggers an extra rendering. This can cause performance issues
+        // Sometimes, needed: measure DOM node to get size or position
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+    }
 
     render() {
         function greet(user) {
