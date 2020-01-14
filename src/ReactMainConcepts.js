@@ -47,7 +47,10 @@ export class ReactMainConcepts extends Component {
         //     `this.state = { ... }; <-- Don't use setState(), use that in other methods
         //     Don't copy props into state, rather use props directly: `this.setState = { foo: props.foo };` <-- ONLY use if you're intending to store the initial value of the prop
         //         See: https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html
-        this.state = { foo: 'bar' };
+        this.state = {
+            date: new Date(),
+            countUpdates: 0
+        };
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -63,6 +66,17 @@ export class ReactMainConcepts extends Component {
         // Setting state
         // If you call setState(), it triggers an extra rendering. This can cause performance issues
         // Sometimes, needed: measure DOM node to get size or position
+
+        this.timerId = setInterval(() => this.tick(), 100);
+    }
+
+    tick() {
+        this.setState((currentState) => {
+            return {
+                date: new Date(),
+                countUpdates: currentState.countUpdates + 1
+            }
+        });
     }
 
     notesOnSetState() {
@@ -113,6 +127,8 @@ export class ReactMainConcepts extends Component {
         //     - unsubscribe
         //
         // Don't call setState. It simply won't do anything (since component is never going to be rendered again)
+
+        clearInterval(this.timerId)
     }
 
     render() {
@@ -142,7 +158,8 @@ export class ReactMainConcepts extends Component {
             <div>
                 { greet() }
                 { greet(this.props.name) }
-                <p>Time { new Date().toLocaleTimeString() }</p>
+                <p>Time { this.state.date.toLocaleTimeString() }</p>
+                <p>Updated #{ this.state.countUpdates }</p>
             </div>
         );
     }
