@@ -7,7 +7,8 @@ export class ReactMainConcepts extends Component {
     // Lifecycle methods diagram: http://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/
     // Common lifecycle methods:
     //     1. constructor()
-    //     2. static getDerivedStateFromProps()  - Note that componentWillMount() is removed
+    //     2. static getDerivedStateFromProps()
+    //     - Note that componentWillMount() is removed, which I remember used to be here
     //     3. render()  <-- Only REQUIRED method
     //     4. componentDidMount()
     // Unmount:
@@ -15,8 +16,11 @@ export class ReactMainConcepts extends Component {
     // Error during rendering or lifecycle or thrown error from child method's constructor()
     //     1. static getDerivedStateFromError()
     //     2 componentDidCatch()
+    //     - These are useful for catching errors from child components, and then rendering the error in the DOM
     // Triggered:
-    //     - componentDidUpdate()
+    //     1. static getDerivedStateFromProps()
+    //     2. render()
+    //     3. componentDidUpdate()
     //
     // Common API methods:
     //     setState()
@@ -40,6 +44,11 @@ export class ReactMainConcepts extends Component {
         //         See: https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html
     }
 
+    static getDerivedStateFromProps(props, state) {
+        // should return an object to update state, or null
+        // working with derived state requires a lot of boilerplate. Alternatives are simpler, see: https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html
+    }
+
     componentDidMount() {
         // Invoked immediately after component mounted into DOM, so DOM is available
         // Often used to instantiate a network request (ajax/fetch)
@@ -51,6 +60,28 @@ export class ReactMainConcepts extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
+        // Whenever updated (but not for the initial render)
+        // Can operate on DOM in response to a the component updating
+        // Often used to make network requests. Take care to verify through prev* inspection that it's actually needed: `if (this.props.userID !== prevProps.userID) { this.fetchData(this.props.userID); }`
+        //
+        // setState() infinite loops:
+        // Perfectly fine to change state, but guard it with a conditional on prev* (see above example)
+        //     ...I think I discovered this method through days of trial and error when I first made a React app last year! ^_^
+        // Again, don't mirror props using state (such as to update this component when parent state changes). Just use props directly. Else risks bugs, loops.
+        //
+        // Common idiom: compare this.props vs. prevProps / this.state vs. prevState
+        //
+        // This method won't be invoked if shouldComponentUpdate() returns false. I guess this make a component completely static?
+        //     For performance optimisation only (and really, should consider PureComponent instead), not for preventing updating
+    }
+
+    componentWillUnmount() {
+        // Common cleanup:
+        //     - unset timers
+        //     - cancel network requests
+        //     - unsubscribe
+        //
+        // Don't call setState. It simply won't do anything (since component is never going to be rendered again)
     }
 
     render() {
