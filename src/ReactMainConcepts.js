@@ -49,13 +49,20 @@ export class ReactMainConcepts extends Component {
         //         See: https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html
         this.state = {
             date: new Date(),
-            countUpdates: 0
+            countUpdates: 0,
+            isButtonToggleOn: false,
+            plant: '🕳'
         };
+
+        // Bind any functions which need to use 'this' work after it is passed to an even handler (e.g. <button onClick={this.handleToggle}>)
+        this.handleToggle = this.handleToggle.bind(this);
+        this.handlePlant = this.handlePlant.bind(this);
     }
 
     static getDerivedStateFromProps(props, state) {
         // should return an object to update state, or null
         // working with derived state requires a lot of boilerplate. Alternatives are simpler, see: https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html
+        return { requiredToReturnSomething: 'from getDerivedStateFromProps'};
     }
 
     componentDidMount() {
@@ -131,6 +138,16 @@ export class ReactMainConcepts extends Component {
         clearInterval(this.timerId)
     }
 
+    handleToggle() {
+        this.setState(state => ({
+            isButtonToggleOn: !state.isButtonToggleOn
+        }));
+    }
+
+    handlePlant(toDisplay) {
+        this.setState({ plant: toDisplay });
+    }
+
     render() {
         function greet(user) {
             if (user) {
@@ -155,9 +172,24 @@ export class ReactMainConcepts extends Component {
         //
         // To NOT invoke render() at all, use the function shouldComponentUpdate() and return false
         return (
-            <div>
-                { greet() }
+            <div style={{ padding: '20px' }}>
                 { greet(this.props.name) }
+                <div>
+                    Toggle:
+                    <button onClick={this.handleToggle}>
+                        {this.state.isButtonToggleOn ? '🌞' : '🌛'}
+                    </button>
+                </div>
+                <div>
+                    <div style={{ fontSize: '2em' }}>{this.state.plant}</div>
+                    <div>
+                        {/* Demonstrating how to send args to event handlers: */}
+                        <button onClick={this.handlePlant.bind(this, '🕳')}>Winter</button>
+                        <button onClick={this.handlePlant.bind(this, '🌱')}>Spring</button>
+                        <button onClick={this.handlePlant.bind(this, '🌷')}>Summer</button>
+                        <button onClick={this.handlePlant.bind(this, '🍂')}>Autumn</button>
+                    </div>
+                </div>
                 <p>Time { this.state.date.toLocaleTimeString() }</p>
                 <p>Updated #{ this.state.countUpdates }</p>
             </div>
