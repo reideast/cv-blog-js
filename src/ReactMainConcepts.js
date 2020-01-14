@@ -24,11 +24,16 @@ export class ReactMainConcepts extends Component {
     //
     // Common API methods:
     //     setState()
-    //     forceUpdate()
     // Uncommon API methods:
+    //     forceUpdate()
     //     shouldComponentUpdate()
     //
-    // Instance Properties: props, state
+    // Instance Properties: props, state (both are just plain JavaScript objects)
+    //     props - Defined by the caller (parent) of this component
+    //     state - data specific to this component (not parents, not children)
+    //           1. Data that changes over time. BUT ALSO:
+    //           2. Data that will be used for rendering or data flow
+    //           - If not both of those, then just the data as fields on this object
     //
     // ClassProperties: defaultProps, displayName
 
@@ -75,6 +80,13 @@ export class ReactMainConcepts extends Component {
         //
         // Could also just pass an object to setState (if you don't need any logic, since you don't have previous state)
         // Beware: These are batched differently than when using the updater method, and subsequent state updates of the same property can overwrite previous
+    }
+
+    notesOnForceUpdate() {
+        // component.forceUpdate(callback)
+        // Trigger render() even if state or props hasn't changed
+        // Used if there's some other data source that render() depends upon, which has been updated
+        // Avoid doing this: just use state/props instead
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -134,3 +146,7 @@ export class ReactMainConcepts extends Component {
         );
     }
 }
+
+ReactMainConcepts.defaultProps = {
+    color: 'blue' // This is now set on any instance of that component
+};
