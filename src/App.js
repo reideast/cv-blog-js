@@ -15,7 +15,7 @@ class App extends Component {
     render() {
         return (
             <div>
-                <ReactMainConcepts/>
+                <ReactMainConcepts name='Andrew'/>
                 <CV/>
                 <TestApi/>
             </div>

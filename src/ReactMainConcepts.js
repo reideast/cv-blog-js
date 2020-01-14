@@ -47,6 +47,7 @@ export class ReactMainConcepts extends Component {
         //     `this.state = { ... }; <-- Don't use setState(), use that in other methods
         //     Don't copy props into state, rather use props directly: `this.setState = { foo: props.foo };` <-- ONLY use if you're intending to store the initial value of the prop
         //         See: https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html
+        this.state = { foo: 'bar' };
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -140,7 +141,7 @@ export class ReactMainConcepts extends Component {
         return (
             <div>
                 { greet() }
-                { greet("Andrew") }
+                { greet(this.props.name) }
                 <p>Time { new Date().toLocaleTimeString() }</p>
             </div>
         );
