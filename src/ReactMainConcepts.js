@@ -231,12 +231,39 @@ class List extends Component {
 }
 
 class Form extends Component {
+    // Controlled Components: Form elems, etc. have their own internal state, which conflicts with React's concept of State (which is purely within JavaScript)
+    //     Make the elem into a Controlled Component to let React handle it
+    //     Essentially, every form elem's onChange will have a handler that updates a corresponding State field
+    //     Then, when submitting the form, utilise the state fields instead of the form's actual values
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            name: ''
+        }
+
+        this.handleNameChange = this.handleNameChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleNameChange(event) {
+        this.setState({ name: event.target.value });
+    }
+
+    handleSubmit(event) {
+        alert(`Submitted: ${this.state.name}`);
+        event.preventDefault();
+    }
+
     render() {
         return (
-            <form>
+            <form onSubmit={ this.handleSubmit }>
                 <label htmlFor='name'>
                     Name:
-                    <input type='text' name='name' />
+                    <input type='text' name='name'
+                           value={ this.state.name }
+                           onChange={ this.handleNameChange }
+                    />
                 </label>
                 <input type='submit' value='Submit' />
             </form>
