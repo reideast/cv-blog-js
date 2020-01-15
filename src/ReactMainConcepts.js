@@ -190,6 +190,7 @@ export class ReactMainConcepts extends Component {
                         <button onClick={this.handlePlant.bind(this, '🍂')}>Autumn</button>
                     </div>
                 </div>
+                <List items={[1, 2, 3, 4, 5]}/>
                 <p>Time { this.state.date.toLocaleTimeString() }</p>
                 <p>Updated #{ this.state.countUpdates }</p>
             </div>
@@ -200,3 +201,30 @@ export class ReactMainConcepts extends Component {
 ReactMainConcepts.defaultProps = {
     color: 'blue' // This is now set on any instance of that component
 };
+
+class List extends Component {
+    render() {
+        // Only use index as Key if there is no ID on the object, it impacts performance and may break state, see: https://medium.com/@robinpokorny/index-as-a-key-is-an-anti-pattern-e0349aece318
+        //     Also, react will auto-provide index as keys if you don't specify a `key=...` in the code. (But still warn you??)
+        const listElems_IndexKey = this.props.items.map((item, index) =>
+            <li key={ index }>
+                { item }
+            </li>
+        );
+        const listElems_ItemKey = this.props.items.map(item =>
+            <li key={ item.toString() }>
+                { item }
+            </li>
+        );
+        return (
+            <div>
+                <ul>
+                    { listElems_IndexKey }
+                </ul>
+                <ol>
+                    { listElems_ItemKey }
+                </ol>
+            </div>
+        );
+    }
+}
