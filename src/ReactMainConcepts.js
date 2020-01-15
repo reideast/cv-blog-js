@@ -190,6 +190,7 @@ export class ReactMainConcepts extends Component {
                         <button onClick={this.handlePlant.bind(this, '🍂')}>Autumn</button>
                     </div>
                 </div>
+                <Form />
                 <List items={[1, 2, 3, 4, 5]}/>
                 <p>Time { this.state.date.toLocaleTimeString() }</p>
                 <p>Updated #{ this.state.countUpdates }</p>
@@ -225,6 +226,20 @@ class List extends Component {
                     { listElems_ItemKey }
                 </ol>
             </div>
+        );
+    }
+}
+
+class Form extends Component {
+    render() {
+        return (
+            <form>
+                <label htmlFor='name'>
+                    Name:
+                    <input type='text' name='name' />
+                </label>
+                <input type='submit' value='Submit' />
+            </form>
         );
     }
 }
