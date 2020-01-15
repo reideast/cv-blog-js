@@ -239,19 +239,35 @@ class Form extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: ''
-        }
+            name: '',
+            mixer: 'water'
+        };
 
-        this.handleNameChange = this.handleNameChange.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleNameChange(event) {
-        this.setState({ name: event.target.value });
+    handleInputChange(event) {
+        this.setState({
+            [event.target.name]: event.target.value
+        });
+        // Note the square brackets in the above property setter are "ES6 computed property name" syntax, see: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Operators/Object_initializer#Computed_property_names
     }
 
     handleSubmit(event) {
-        alert(`Submitted: ${this.state.name}`);
+        switch (this.state.mixer) {
+            case 'water':
+                alert(`${this.state.name} has a healthy attitude!`);
+                break;
+            case 'lime':
+                alert(`Doctor ${this.state.name} knows the cure...now shake it all up!`);
+                break;
+            case 'rum':
+                alert(`It's piña colada time, ${this.state.name}! Who has a little umbrella?`);
+                break;
+            default:
+                alert(`You shouldn't have been able to choose no option at all, ${this.state.name}...`);
+        }
         event.preventDefault();
     }
 
@@ -262,8 +278,17 @@ class Form extends Component {
                     Name:
                     <input type='text' name='name'
                            value={ this.state.name }
-                           onChange={ this.handleNameChange }
-                    />
+                           onChange={ this.handleInputChange } />
+                </label>
+                <label htmlFor='mixer'>
+                    Select what goes in the coconut:
+                    <select name='mixer'
+                            value={ this.state.mixer }
+                            onChange={ this.handleInputChange }>
+                        <option value='water'>Water</option>
+                        <option value='lime'>Lime</option>
+                        <option value='rum'>Rum</option>
+                    </select>
                 </label>
                 <input type='submit' value='Submit' />
             </form>
