@@ -109,9 +109,21 @@ class CVWorkExperience extends Component {
                 {(this.state.apiFetchCompleted) ? (
                     (this.state.jobs) ? (
                         <dl>
-                            {this.state.jobs.map((item, index) => {
-                                return index; // TODO
-                            })}
+                            {this.state.jobs.map((job, index) => (
+                                <React.Fragment key={index}>
+                                    <dt><cv-date-circa>{job.date}</cv-date-circa></dt>
+                                    <dd>
+                                        <cv-company>{job.company}</cv-company>
+                                        <cv-job-title>{job.title}</cv-job-title>
+                                        <cv-location>{job.location}</cv-location>
+                                        <ul>
+                                            {job.details.map((detail, index) => (
+                                                <li key={index}>{detail}</li>
+                                            ))}
+                                        </ul>
+                                    </dd>
+                                </React.Fragment>
+                            ))}
                         </dl>
                     ) : (
                         <div className='api-failure'>
