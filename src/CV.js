@@ -133,9 +133,6 @@ class CVWorkExperience extends Component {
                 ) : (
                     <div>Loading...</div>
                 )}
-                <div id='api-test-result' className={this.state.apiStatusSuccess ? 'api-success' : 'api-failure'}>
-                    <p>{this.state.apiResponse || 'Loading...'}</p>
-                </div>
             </section>
         );
     }
