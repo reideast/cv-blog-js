@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+
 // Resume/CV using CSS Grid, see: https://css-tricks.com/new-year-new-job-lets-make-a-grid-powered-resume/
 export class CV extends Component {
     constructor(props) {
@@ -75,10 +77,56 @@ class CVAbout extends Component {
 }
 
 class CVWorkExperience extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            jobs: null,
+            apiFetchCompleted: false,
+            apiFetchFailureMessage: ''
+        };
+    }
+
+    async componentDidMount() {
+        try {
+            const res = await fetch(REACT_APP_API_URL + '/cv/job');
+            if (res.status >= 400) {
+                throw new Error('API Failure');
+            }
+            const result = await res.json();
+            this.setState({ jobs: result, apiFetchCompleted: true });
+        } catch (err) {
+            console.error('API fetch failure', err); // DEBUG
+            this.setState({ apiFetchFailureMessage: 'API fetch failure', apiFetchCompleted: true });
+        }
+    }
+
     render() {
+        // Looping over JSON to make DOM elements, See: https://reactjs.org/docs/getting-started.html
+        // TODO: Don't use the inline conditional, separate out into variables
         return (
             <section className='cv-grid-section-work cv-grid-section'>
                 <h2>Work Experience</h2>
+                {(this.state.apiFetchCompleted) ? (
+                    (this.state.jobs) ? (
+                        <dl>
+                            {this.state.jobs.map((item, index) => {
+                                return index; // TODO
+                            })}
+                        </dl>
+                    ) : (
+                        <div className='api-failure'>
+                            {this.state.apiFetchFailureMessage}
+                        </div>
+                    )
+                ) : (
+                    <div>Loading...</div>
+                )}
+                <div id='api-test-result' className={this.state.apiStatusSuccess ? 'api-success' : 'api-failure'}>
+                    <p>{this.state.apiResponse || 'Loading...'}</p>
+                </div>
+
+
+
                 <dl>
                     <dt><cv-date-circa>2019-Current</cv-date-circa></dt>
                     <dd>
