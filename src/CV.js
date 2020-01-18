@@ -66,11 +66,46 @@ class CVPhoto extends Component {
 }
 
 class CVAbout extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            aboutLines: null,
+            apiFetchCompleted: false,
+            apiFetchFailureMessage: ''
+        };
+    }
+
+    async componentDidMount() {
+        try {
+            const res = await fetch(REACT_APP_API_URL + '/cv/about');
+            if (res.status >= 400) {
+                throw new Error('API Failure');
+            }
+            const result = await res.json();
+            this.setState({ aboutLines: result, apiFetchCompleted: true });
+        } catch (err) {
+            console.error('API fetch failure', err); // DEBUG
+            this.setState({ apiFetchFailureMessage: 'API fetch failure', apiFetchCompleted: true });
+        }
+    }
+
     render() {
+        // TODO: Don't use the inline conditional, separate out into variables
         return (
             <section className='cv-grid-section-about cv-grid-section'>
-                <p>Hello world, I'm Andrew. I like coding, I'm nerdy about a lot of stuff, and I putting together this web site now!</p>
-                <p>Graduate software engineer with a lifelong enthusiasm for coding along with ten years of proven IT experience</p>
+                {(this.state.apiFetchCompleted) ? (
+                    (this.state.aboutLines) ? (
+                        this.state.aboutLines.map((line, index) => (
+                            <p key={index}>{line}</p>
+                        ))
+                    ) : (
+                        <div className='api-failure'>
+                            {this.state.apiFetchFailureMessage}
+                        </div>
+                    )
+                ) : (
+                    <div>Loading...</div>
+                )}
             </section>
         );
     }
