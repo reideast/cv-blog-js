@@ -27,10 +27,46 @@ export class CV extends Component {
 }
 
 export class CVName extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            name: null,
+            apiFetchCompleted: false,
+            apiFetchFailureMessage: ''
+        };
+    }
+
+    async componentDidMount() {
+        try {
+            const res = await fetch(REACT_APP_API_URL + '/cv/name');
+            if (res.status >= 400) {
+                throw new Error('API Failure');
+            }
+            const result = await res.text();
+            this.setState({ name: result, apiFetchCompleted: true });
+        } catch (err) {
+            console.error('API fetch failure', err); // DEBUG
+            this.setState({ apiFetchFailureMessage: 'API fetch failure', apiFetchCompleted: true });
+        }
+    }
+
     render() {
+        // TODO: Don't use the inline conditional, separate out into variables
         return (
             <section className='cv-grid-section-name cv-grid-section'>
-                <h1>Andrew Reid East</h1>
+                <h1>
+                    {(this.state.apiFetchCompleted) ? (
+                        (this.state.name) ? (
+                            this.state.name
+                        ) : (
+                            <div className='api-failure'>
+                                {this.state.apiFetchFailureMessage}
+                            </div>
+                        )
+                    ) : (
+                        <div>Loading...</div>
+                    )}
+                </h1>
                 <CVContactHeader />
             </section>
         );
