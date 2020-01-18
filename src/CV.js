@@ -270,61 +270,58 @@ class CVCommunity extends Component {
 }
 
 class CVSkills extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            skills: null,
+            apiFetchCompleted: false,
+            apiFetchFailureMessage: ''
+        };
+    }
+
+    async componentDidMount() {
+        try {
+            const res = await fetch(REACT_APP_API_URL + '/cv/skills');
+            if (res.status >= 400) {
+                throw new Error('API Failure');
+            }
+            const result = await res.json();
+            this.setState({ skills: result, apiFetchCompleted: true });
+        } catch (err) {
+            console.error('API fetch failure', err); // DEBUG
+            this.setState({ apiFetchFailureMessage: 'API fetch failure', apiFetchCompleted: true });
+        }
+    }
+
     render() {
+        // TODO: Don't use the inline conditional, separate out into variables
         return (
             <section className='cv-grid-section-skills cv-grid-section'>
                 <h2>Technical Skills</h2>
-                <dl>
-                    <dt>Programming Languages</dt>
-                    <dd>
-                        <ul>
-                            <li>Java</li>
-                            <li>JavaScript</li>
-                            <li>Python</li>
-                            <li>React</li>
-                            <li>TypeScript</li>
-                            <li>Node.js</li>
-                            <li>HTML</li>
-                            <li>CSS</li>
-                            <li>PostgreSQL</li>
-                            <li>C</li>
-                            <li>bash</li>
-                        </ul>
-                    </dd>
-                    <dt>Coding tools</dt>
-                    <dd>
-                        <ul>
-                            <li>git</li>
-                            <li>vim</li>
-                            <li>AWS</li>
-                            <li>IntelliJ</li>
-                            <li>Gradle</li>
-                            <li>Jira</li>
-                        </ul>
-                    </dd>
-                    <dt>IT Systems Admin</dt>
-                    <dd>
-                        <ul>
-                            <li>Windows 10,8,7,XP</li>
-                            <li>Windows Server 2012</li>
-                            <li>RHEL</li>
-                            <li>CentOS</li>
-                            <li>Cisco hardware & IOS</li>
-                            <li>Rack-mount server hardware</li>
-                        </ul>
-                    </dd>
-                    <dt>Office Skills</dt>
-                    <dd>
-                        <ul>
-                            <li>Excel</li>
-                            <li>Access</li>
-                            <li>Publisher</li>
-                            <li>Word</li>
-                            <li>Visio</li>
-                            <li>Typing 80 WPM</li>
-                        </ul>
-                    </dd>
-                </dl>
+                {(this.state.apiFetchCompleted) ? (
+                    (this.state.skills) ? (
+                        <dl>
+                            {this.state.skills.map((skill, index) => (
+                                <React.Fragment key={index}>
+                                    <dt>{skill.skill}</dt>
+                                    <dd>
+                                        <ul>
+                                            {skill.details.map((detail, index) => (
+                                                <li key={index}>{detail}</li>
+                                            ))}
+                                        </ul>
+                                    </dd>
+                                </React.Fragment>
+                            ))}
+                        </dl>
+                    ) : (
+                        <div className='api-failure'>
+                            {this.state.apiFetchFailureMessage}
+                        </div>
+                    )
+                ) : (
+                    <div>Loading...</div>
+                )}
             </section>
         );
     }
