@@ -243,27 +243,59 @@ Flexible <strong>team player</strong> able to work effectively in a large team o
  */
 
 class CVCommunity extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            memberships: null,
+            apiFetchCompleted: false,
+            apiFetchFailureMessage: ''
+        };
+    }
+
+    async componentDidMount() {
+        try {
+            const res = await fetch(REACT_APP_API_URL + '/cv/memberships');
+            if (res.status >= 400) {
+                throw new Error('API Failure');
+            }
+            const result = await res.json();
+            this.setState({ memberships: result, apiFetchCompleted: true });
+        } catch (err) {
+            console.error('API fetch failure', err); // DEBUG
+            this.setState({ apiFetchFailureMessage: 'API fetch failure', apiFetchCompleted: true });
+        }
+    }
+
     render() {
+        // TODO: Don't use the inline conditional, separate out into variables
         return (
             <section className='cv-grid-section-community cv-grid-section'>
                 <h2>Professional Memberships and Certifications</h2>
-                <dl>
-                    <dt><cv-organization>Association for Computing Machinery (ACM)</cv-organization></dt>
-                    <dd><cv-date-circa>since 2015</cv-date-circa></dd>
-                    <dt>Google Developers Group Galway</dt>
-                    <dt>CompSoc, Vice-Auditor NUI Galway</dt>
-                    <dt>Digital Champions, NUI Galway</dt>
-                    <dd>Cisco Certified Networking Associate (CCNA)</dd>
-                    <dt>
-                        <cv-date-circa>2013</cv-date-circa>
-                        <div>Routing and Switching</div>
-                    </dt>
-                    <dd>CompTIA A+ Certification</dd>
-                    <dt>
-                        <cv-date-circa>Computer Technician</cv-date-circa>
-                        <div>2011</div>
-                    </dt>
-                </dl>
+                {(this.state.apiFetchCompleted) ? (
+                    (this.state.memberships) ? (
+                        <dl>
+                            {this.state.memberships.map((membership, index) => (
+                                <React.Fragment key={index}>
+                                    <dt><cv-organization>{membership.organization}</cv-organization></dt>
+                                    <dd>
+                                        <cv-date-circa>{membership.date}</cv-date-circa>
+                                        <ul>
+                                            {membership.details.map((detail, index) => (
+                                                <li key={index}>{detail}</li>
+                                            ))}
+                                        </ul>
+                                    </dd>
+                                </React.Fragment>
+                            ))}
+                        </dl>
+                    ) : (
+                        <div className='api-failure'>
+                            {this.state.apiFetchFailureMessage}
+                        </div>
+                    )
+                ) : (
+                    <div>Loading...</div>
+                )}
             </section>
         );
     }
