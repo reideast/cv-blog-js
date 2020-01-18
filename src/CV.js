@@ -1,6 +1,19 @@
 import React, {Component} from 'react';
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+async function fetchFromApi(endpoint, apiResultProp, isText = false) {
+    try {
+        const res = await fetch(REACT_APP_API_URL + endpoint);
+        if (res.status >= 400) {
+            throw new Error('API Failure');
+        }
+        const result = isText ? await res.text() : await res.json();
+        this.setState({ [apiResultProp]: result, apiFetchCompleted: true });
+    } catch (err) {
+        console.error('API fetch failure', err); // DEBUG
+        this.setState({ apiFetchFailureMessage: 'API fetch failure', apiFetchCompleted: true });
+    }
+}
 
 // Resume/CV using CSS Grid, see: https://css-tricks.com/new-year-new-job-lets-make-a-grid-powered-resume/
 export class CV extends Component {
@@ -26,40 +39,16 @@ export class CV extends Component {
     }
 }
 
-async function fetchFromApi(endpoint, apiResultProp, that, isText = false) {
-    try {
-        const res = await fetch(REACT_APP_API_URL + endpoint);
-        if (res.status >= 400) {
-            throw new Error('API Failure');
-        }
-        let result;
-        if (isText) {
-            result = await res.text();
-        } else {
-            result = await res.json();
-        }
-        that.setState({ [apiResultProp]: result, apiFetchCompleted: true });
-    } catch (err) {
-        console.error('API fetch failure', err); // DEBUG
-        that.setState({ apiFetchFailureMessage: 'API fetch failure', apiFetchCompleted: true });
-    }
-}
-
 export class CVName extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: null,
-            apiFetchCompleted: false,
-            apiFetchFailureMessage: ''
+            name: null
         };
     }
 
     async componentDidMount() {
-        const endpoint = '/cv/name';
-        const apiResultProp = 'name';
-        const that = this;
-        await fetchFromApi(endpoint, apiResultProp, that, true);
+        await fetchFromApi.call(this, '/cv/name', 'name', true);
     }
 
     render() {
