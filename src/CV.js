@@ -26,6 +26,25 @@ export class CV extends Component {
     }
 }
 
+async function fetchFromApi(endpoint, apiResultProp, that, isText = false) {
+    try {
+        const res = await fetch(REACT_APP_API_URL + endpoint);
+        if (res.status >= 400) {
+            throw new Error('API Failure');
+        }
+        let result;
+        if (isText) {
+            result = await res.text();
+        } else {
+            result = await res.json();
+        }
+        that.setState({ [apiResultProp]: result, apiFetchCompleted: true });
+    } catch (err) {
+        console.error('API fetch failure', err); // DEBUG
+        that.setState({ apiFetchFailureMessage: 'API fetch failure', apiFetchCompleted: true });
+    }
+}
+
 export class CVName extends Component {
     constructor(props) {
         super(props);
@@ -37,17 +56,10 @@ export class CVName extends Component {
     }
 
     async componentDidMount() {
-        try {
-            const res = await fetch(REACT_APP_API_URL + '/cv/name');
-            if (res.status >= 400) {
-                throw new Error('API Failure');
-            }
-            const result = await res.text();
-            this.setState({ name: result, apiFetchCompleted: true });
-        } catch (err) {
-            console.error('API fetch failure', err); // DEBUG
-            this.setState({ apiFetchFailureMessage: 'API fetch failure', apiFetchCompleted: true });
-        }
+        const endpoint = '/cv/name';
+        const apiResultProp = 'name';
+        const that = this;
+        await fetchFromApi(endpoint, apiResultProp, that, true);
     }
 
     render() {
