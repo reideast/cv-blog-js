@@ -74,22 +74,90 @@ export class CVName extends Component {
 }
 
 class CVContactHeader extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            contacts: null,
+            apiFetchCompleted: false,
+            apiFetchFailureMessage: ''
+        };
+    }
+
+    async componentDidMount() {
+        try {
+            const res = await fetch(REACT_APP_API_URL + '/cv/contacts');
+            if (res.status >= 400) {
+                throw new Error('API Failure');
+            }
+            const result = await res.json();
+            this.setState({ contacts: result, apiFetchCompleted: true });
+        } catch (err) {
+            console.error('API fetch failure', err); // DEBUG
+            this.setState({ apiFetchFailureMessage: 'API fetch failure', apiFetchCompleted: true });
+        }
+    }
+
     render() {
+        // TODO: Don't use the inline conditional, separate out into variables
         return (
-            <div>
-                <cv-contacts>
-                    <cv-email>{/* icon:email */}andrew@andreweast.net</cv-email>
-                    <cv-location>{/* icon:globe/location */}Galway, Ireland</cv-location>
-                    <cv-web-portfolio>{/* icon:email */}andreweast.net/portfolio</cv-web-portfolio>
-                    <cv-web-github>{/* icon:github */}github.com/reideast</cv-web-github>
-                    <cv-web-linkedin>{/* icon:linkedin */}linkedin.com/in/andrewreideast</cv-web-linkedin>
-                    <cv-web-twitter>{/* icon:twitter */}deskase</cv-web-twitter>
-                    <cv-web-aboutme>{/* icon:aboutme */}andrewreideast</cv-web-aboutme>
-                </cv-contacts>
-            </div>
+            <section className='cv-grid-section-about cv-grid-section'>
+                {(this.state.apiFetchCompleted) ? (
+                    (this.state.contacts) ? (
+                        (this.state.contacts.email) ? (
+                            <cv-email>this.state.contacts.email</cv-email>
+                        ) : '') + (
+                        (this.state.contacts.location) ? (
+                            <cv-location>this.state.contacts.location</cv-location>
+                        ) : '') + (
+                        (this.state.contacts.portfolio) ? (
+                            <cv-portfolio>this.state.contacts.portfolio</cv-portfolio>
+                        ) : '') + (
+                        (this.state.contacts.github) ? (
+                            <cv-github><a href={'https://github.com/' + this.state.contacts.github}>
+                                this.state.contacts.github
+                            </a></cv-github>
+                        ) : '') + (
+                        (this.state.contacts.linkedin) ? (
+                            <cv-linkedin><a href={'https://linkedin.com/in/' + this.state.contacts.linkedin}>
+                                this.state.contacts.linkedin
+                            </a></cv-linkedin>
+                        ) : '') + (
+                        (this.state.contacts.twitter) ? (
+                            <cv-twitter><a href={'https://twitter.com/' + this.state.contacts.twitter}>
+                                this.state.contacts.twitter
+                            </a></cv-twitter>
+                        ) : '') + (
+                        (this.state.contacts.aboutme) ? (
+                            <cv-aboutme><a href={'https://aboutme.com/' + this.state.contacts.aboutme}>
+                                this.state.contacts.aboutme
+                            </a></cv-aboutme>
+                        ) : '') + (
+                        (this.state.contacts.facebook) ? (
+                            <cv-facebook><a href={'https://facebook.com/' + this.state.contacts.facebook}>
+                                this.state.contacts.facebook
+                            </a></cv-facebook>
+                        ) : ''
+                    ) : (
+                        <div className='api-failure'>
+                            {this.state.apiFetchFailureMessage}
+                        </div>
+                    )
+                ) : (
+                    <div>Loading...</div>
+                )}
+            </section>
         );
     }
 }
+
+// {/* icon:email */}
+// {/* icon:globe/location */}
+// {/* icon:portfolio */}
+// {/* icon:github */}
+// {/* icon:linkedin */}
+// {/* icon:twitter */}
+// {/* icon:aboutme */}
+
 
 class CVPhoto extends Component {
     render() {
