@@ -139,50 +139,71 @@ class CVWorkExperience extends Component {
 }
 
 class CVEducation extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            schools: null,
+            apiFetchCompleted: false,
+            apiFetchFailureMessage: ''
+        };
+    }
+
+    async componentDidMount() {
+        try {
+            const res = await fetch(REACT_APP_API_URL + '/cv/schools');
+            if (res.status >= 400) {
+                throw new Error('API Failure');
+            }
+            const result = await res.json();
+            this.setState({ schools: result, apiFetchCompleted: true });
+        } catch (err) {
+            console.error('API fetch failure', err); // DEBUG
+            this.setState({ apiFetchFailureMessage: 'API fetch failure', apiFetchCompleted: true });
+        }
+    }
+
     render() {
+        // TODO: Don't use the inline conditional, separate out into variables
         return (
             <section className='cv-grid-section-education cv-grid-section'>
                 <h2>Education</h2>
-                <dl>
-                    <dt><cv-date-circa>2016-2019</cv-date-circa></dt>
-                    <dd>
-                        <cv-degree>Bachelor of Science (Honours), Computer Science</cv-degree>
-                        <cv-school>National University of Ireland, Galway</cv-school>
-                        <cv-location>Galway, Ireland</cv-location>
-                        <cv-thesis>{/* icon:github */}Thesis Project: Genetic algorithm to schedule a timetable using machine learning in Java EE presented as a React app deployed to AWS, EC2, and an RDS Postgres database</cv-thesis>
-                        <cv-grades>First-class Honours: overall marks 90.18% (A+ equivalent)</cv-grades>
-                        <ul>
-                            <li>Java Data Structures & Algorithms A</li>
-                            <li>Software Engineering A+</li>
-                            <li>Databases A+</li>
-                            <li>Discrete Maths A+</li>
-                            <li>AI A</li>
-                            <li>Machine Learning A+</li>
-                            <li>Cryptography A+</li>
-                        </ul>
-                    </dd>
-                    <dt><cv-date-circa>2014-2015</cv-date-circa></dt>
-                    <dd>
-                        <cv-degree>Associate of Science, Computer Science</cv-degree>
-                        <cv-school>Riverside City College</cv-school>
-                        <cv-location>California, United States</cv-location>
-                        <cv-thesis>{/* icon:github */}Dean's List Honours: (Overall 97.8%)</cv-thesis>
-                        <cv-grades>Searchable database web app in PHP and MySQL</cv-grades>
-                        <ul>
-                            <li>Systems Analysis</li>
-                            <li>Programming in C++</li>
-                            <li>Java</li>
-                            <li>PHP</li>
-                            <li>Operating Systems</li>
-                            <li>Data Structures</li>
-                            <li>Cisco Networking Academy</li>
-                        </ul>
-                    </dd>
-                </dl>
+                {(this.state.apiFetchCompleted) ? (
+                    (this.state.schools) ? (
+                        <dl>
+                            {this.state.schools.map((school, index) => (
+                                <React.Fragment key={index}>
+                                    <dt><cv-date-circa>{school.date}</cv-date-circa></dt>
+                                    <dd>
+                                        <cv-degree>{school.degree}</cv-degree>
+                                        <cv-school>{school.degree}</cv-school>
+                                        <cv-location>{school.location}</cv-location>
+                                        <cv-thesis>{/* icon:github */}<a href={school.thesis.url}>{school.thesis.description}</a></cv-thesis>
+                                        <cv-gpa-overall-results>{school.gpa_overall_results}</cv-gpa-overall-results>
+                                        <ul>
+                                            {school.details.map((detail, index) => (
+                                                <li key={index}>{detail}</li>
+                                            ))}
+                                        </ul>
+                                    </dd>
+                                </React.Fragment>
+                            ))}
+                        </dl>
+                    ) : (
+                        <div className='api-failure'>
+                            {this.state.apiFetchFailureMessage}
+                        </div>
+                    )
+                ) : (
+                    <div>Loading...</div>
+                )}
             </section>
         );
     }
 }
+
+// TODO: component for a project, e.g. github or personal profile etc.
+// TODO:     It will extract the base URL to determine the icon to show
+// TODO:     nice things: it's reusable for Education, Projects, etc.
 
 // class CVProjects extends Component {
 //     render() {
