@@ -79,23 +79,11 @@ class CVContactHeader extends Component {
         super(props);
         this.state = {
             contacts: null,
-            apiFetchCompleted: false,
-            apiFetchFailureMessage: ''
         };
     }
 
     async componentDidMount() {
-        try {
-            const res = await fetch(REACT_APP_API_URL + '/cv/contacts');
-            if (res.status >= 400) {
-                throw new Error('API Failure');
-            }
-            const result = await res.json();
-            this.setState({ contacts: result, apiFetchCompleted: true });
-        } catch (err) {
-            console.error('API fetch failure', err); // DEBUG
-            this.setState({ apiFetchFailureMessage: 'API fetch failure', apiFetchCompleted: true });
-        }
+        await fetchFromApi.call(this, '/cv/contacts', 'contacts');
     }
 
     render() {
@@ -174,24 +162,12 @@ class CVAbout extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            aboutLines: null,
-            apiFetchCompleted: false,
-            apiFetchFailureMessage: ''
+            aboutLines: null
         };
     }
 
     async componentDidMount() {
-        try {
-            const res = await fetch(REACT_APP_API_URL + '/cv/about');
-            if (res.status >= 400) {
-                throw new Error('API Failure');
-            }
-            const result = await res.json();
-            this.setState({ aboutLines: result, apiFetchCompleted: true });
-        } catch (err) {
-            console.error('API fetch failure', err); // DEBUG
-            this.setState({ apiFetchFailureMessage: 'API fetch failure', apiFetchCompleted: true });
-        }
+        await fetchFromApi.call(this, '/cv/about', 'aboutLines');
     }
 
     render() {
@@ -220,24 +196,12 @@ class CVWorkExperience extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            jobs: null,
-            apiFetchCompleted: false,
-            apiFetchFailureMessage: ''
+            jobs: null
         };
     }
 
     async componentDidMount() {
-        try {
-            const res = await fetch(REACT_APP_API_URL + '/cv/job');
-            if (res.status >= 400) {
-                throw new Error('API Failure');
-            }
-            const result = await res.json();
-            this.setState({ jobs: result, apiFetchCompleted: true });
-        } catch (err) {
-            console.error('API fetch failure', err); // DEBUG
-            this.setState({ apiFetchFailureMessage: 'API fetch failure', apiFetchCompleted: true });
-        }
+        await fetchFromApi.call(this, '/cv/job', 'jobs');
     }
 
     render() {
@@ -282,24 +246,12 @@ class CVEducation extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            schools: null,
-            apiFetchCompleted: false,
-            apiFetchFailureMessage: ''
+            schools: null
         };
     }
 
     async componentDidMount() {
-        try {
-            const res = await fetch(REACT_APP_API_URL + '/cv/schools');
-            if (res.status >= 400) {
-                throw new Error('API Failure');
-            }
-            const result = await res.json();
-            this.setState({ schools: result, apiFetchCompleted: true });
-        } catch (err) {
-            console.error('API fetch failure', err); // DEBUG
-            this.setState({ apiFetchFailureMessage: 'API fetch failure', apiFetchCompleted: true });
-        }
+        await fetchFromApi.call(this, '/cv/schools', 'schools');
     }
 
     render() {
@@ -386,24 +338,12 @@ class CVCommunity extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            memberships: null,
-            apiFetchCompleted: false,
-            apiFetchFailureMessage: ''
+            memberships: null
         };
     }
 
     async componentDidMount() {
-        try {
-            const res = await fetch(REACT_APP_API_URL + '/cv/memberships');
-            if (res.status >= 400) {
-                throw new Error('API Failure');
-            }
-            const result = await res.json();
-            this.setState({ memberships: result, apiFetchCompleted: true });
-        } catch (err) {
-            console.error('API fetch failure', err); // DEBUG
-            this.setState({ apiFetchFailureMessage: 'API fetch failure', apiFetchCompleted: true });
-        }
+        await fetchFromApi.call(this, '/cv/memberships', 'memberships');
     }
 
     render() {
@@ -445,24 +385,12 @@ class CVSkills extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            skills: null,
-            apiFetchCompleted: false,
-            apiFetchFailureMessage: ''
+            skills: null
         };
     }
 
     async componentDidMount() {
-        try {
-            const res = await fetch(REACT_APP_API_URL + '/cv/skills');
-            if (res.status >= 400) {
-                throw new Error('API Failure');
-            }
-            const result = await res.json();
-            this.setState({ skills: result, apiFetchCompleted: true });
-        } catch (err) {
-            console.error('API fetch failure', err); // DEBUG
-            this.setState({ apiFetchFailureMessage: 'API fetch failure', apiFetchCompleted: true });
-        }
+        await fetchFromApi.call(this, '/cv/skills', 'skills');
     }
 
     render() {
