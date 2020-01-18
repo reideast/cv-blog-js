@@ -17,11 +17,6 @@ async function fetchFromApi(endpoint, apiResultProp, isText = false) {
 
 // Resume/CV using CSS Grid, see: https://css-tricks.com/new-year-new-job-lets-make-a-grid-powered-resume/
 export class CV extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
-    }
-
     render() {
         return (
             <main id='cv-wrapper'>
@@ -51,6 +46,12 @@ export class CVName extends Component {
         await fetchFromApi.call(this, '/cv/name', 'name', true);
     }
 
+    generateElemsWithApiResults() {
+        return (
+            this.state.name
+        );
+    }
+
     render() {
         // TODO: Don't use the inline conditional, separate out into variables
         return (
@@ -58,7 +59,7 @@ export class CVName extends Component {
                 <h1>
                     {(this.state.apiFetchCompleted) ? (
                         (this.state.name) ? (
-                            this.state.name
+                            this.generateElemsWithApiResults()
                         ) : (
                             <div className='api-failure'>
                                 {this.state.apiFetchFailureMessage}
@@ -86,46 +87,52 @@ class CVContactHeader extends Component {
         await fetchFromApi.call(this, '/cv/contacts', 'contacts');
     }
 
+    generateElemsWithApiResults() {
+        return (
+            (this.state.contacts.email) ? (
+                <cv-email>this.state.contacts.email</cv-email>
+            ) : '') + (
+            (this.state.contacts.location) ? (
+                <cv-location>this.state.contacts.location</cv-location>
+            ) : '') + (
+            (this.state.contacts.portfolio) ? (
+                <cv-portfolio>this.state.contacts.portfolio</cv-portfolio>
+            ) : '') + (
+            (this.state.contacts.github) ? (
+                <cv-github><a href={'https://github.com/' + this.state.contacts.github}>
+                    this.state.contacts.github
+                </a></cv-github>
+            ) : '') + (
+            (this.state.contacts.linkedin) ? (
+                <cv-linkedin><a href={'https://linkedin.com/in/' + this.state.contacts.linkedin}>
+                    this.state.contacts.linkedin
+                </a></cv-linkedin>
+            ) : '') + (
+            (this.state.contacts.twitter) ? (
+                <cv-twitter><a href={'https://twitter.com/' + this.state.contacts.twitter}>
+                    this.state.contacts.twitter
+                </a></cv-twitter>
+            ) : '') + (
+            (this.state.contacts.aboutme) ? (
+                <cv-aboutme><a href={'https://aboutme.com/' + this.state.contacts.aboutme}>
+                    this.state.contacts.aboutme
+                </a></cv-aboutme>
+            ) : '') + (
+            (this.state.contacts.facebook) ? (
+                <cv-facebook><a href={'https://facebook.com/' + this.state.contacts.facebook}>
+                    this.state.contacts.facebook
+                </a></cv-facebook>
+            ) : ''
+        );
+    }
+
     render() {
         // TODO: Don't use the inline conditional, separate out into variables
         return (
             <section className='cv-grid-section-about cv-grid-section'>
                 {(this.state.apiFetchCompleted) ? (
                     (this.state.contacts) ? (
-                        (this.state.contacts.email) ? (
-                            <cv-email>this.state.contacts.email</cv-email>
-                        ) : '') + (
-                        (this.state.contacts.location) ? (
-                            <cv-location>this.state.contacts.location</cv-location>
-                        ) : '') + (
-                        (this.state.contacts.portfolio) ? (
-                            <cv-portfolio>this.state.contacts.portfolio</cv-portfolio>
-                        ) : '') + (
-                        (this.state.contacts.github) ? (
-                            <cv-github><a href={'https://github.com/' + this.state.contacts.github}>
-                                this.state.contacts.github
-                            </a></cv-github>
-                        ) : '') + (
-                        (this.state.contacts.linkedin) ? (
-                            <cv-linkedin><a href={'https://linkedin.com/in/' + this.state.contacts.linkedin}>
-                                this.state.contacts.linkedin
-                            </a></cv-linkedin>
-                        ) : '') + (
-                        (this.state.contacts.twitter) ? (
-                            <cv-twitter><a href={'https://twitter.com/' + this.state.contacts.twitter}>
-                                this.state.contacts.twitter
-                            </a></cv-twitter>
-                        ) : '') + (
-                        (this.state.contacts.aboutme) ? (
-                            <cv-aboutme><a href={'https://aboutme.com/' + this.state.contacts.aboutme}>
-                                this.state.contacts.aboutme
-                            </a></cv-aboutme>
-                        ) : '') + (
-                        (this.state.contacts.facebook) ? (
-                            <cv-facebook><a href={'https://facebook.com/' + this.state.contacts.facebook}>
-                                this.state.contacts.facebook
-                            </a></cv-facebook>
-                        ) : ''
+                        this.generateElemsWithApiResults()
                     ) : (
                         <div className='api-failure'>
                             {this.state.apiFetchFailureMessage}
@@ -170,15 +177,21 @@ class CVAbout extends Component {
         await fetchFromApi.call(this, '/cv/about', 'aboutLines');
     }
 
+    generateElemsWithApiResults() {
+        return (
+            this.state.aboutLines.map((line, index) => (
+                <p key={index}>{line}</p>
+            ))
+        );
+    }
+
     render() {
         // TODO: Don't use the inline conditional, separate out into variables
         return (
             <section className='cv-grid-section-about cv-grid-section'>
                 {(this.state.apiFetchCompleted) ? (
                     (this.state.aboutLines) ? (
-                        this.state.aboutLines.map((line, index) => (
-                            <p key={index}>{line}</p>
-                        ))
+                        this.generateElemsWithApiResults()
                     ) : (
                         <div className='api-failure'>
                             {this.state.apiFetchFailureMessage}
@@ -204,6 +217,28 @@ class CVWorkExperience extends Component {
         await fetchFromApi.call(this, '/cv/job', 'jobs');
     }
 
+    generateElemsWithApiResults() {
+        return (
+            <dl>
+                {this.state.jobs.map((job, index) => (
+                    <React.Fragment key={index}>
+                        <dt><cv-date-circa>{job.date}</cv-date-circa></dt>
+                        <dd>
+                            <cv-company>{job.company}</cv-company>
+                            <cv-job-title>{job.title}</cv-job-title>
+                            <cv-location>{job.location}</cv-location>
+                            <ul>
+                                {job.details.map((detail, index) => (
+                                    <li key={index}>{detail}</li>
+                                ))}
+                            </ul>
+                        </dd>
+                    </React.Fragment>
+                ))}
+            </dl>
+        );
+    }
+
     render() {
         // Looping over JSON to make DOM elements, See: https://reactjs.org/docs/getting-started.html
         // TODO: Don't use the inline conditional, separate out into variables
@@ -212,23 +247,7 @@ class CVWorkExperience extends Component {
                 <h2>Work Experience</h2>
                 {(this.state.apiFetchCompleted) ? (
                     (this.state.jobs) ? (
-                        <dl>
-                            {this.state.jobs.map((job, index) => (
-                                <React.Fragment key={index}>
-                                    <dt><cv-date-circa>{job.date}</cv-date-circa></dt>
-                                    <dd>
-                                        <cv-company>{job.company}</cv-company>
-                                        <cv-job-title>{job.title}</cv-job-title>
-                                        <cv-location>{job.location}</cv-location>
-                                        <ul>
-                                            {job.details.map((detail, index) => (
-                                                <li key={index}>{detail}</li>
-                                            ))}
-                                        </ul>
-                                    </dd>
-                                </React.Fragment>
-                            ))}
-                        </dl>
+                        this.generateElemsWithApiResults()
                     ) : (
                         <div className='api-failure'>
                             {this.state.apiFetchFailureMessage}
@@ -254,6 +273,30 @@ class CVEducation extends Component {
         await fetchFromApi.call(this, '/cv/schools', 'schools');
     }
 
+    generateElemsWithApiResults() {
+        return (
+            <dl>
+                {this.state.schools.map((school, index) => (
+                    <React.Fragment key={index}>
+                        <dt><cv-date-circa>{school.date}</cv-date-circa></dt>
+                        <dd>
+                            <cv-degree>{school.degree}</cv-degree>
+                            <cv-school>{school.degree}</cv-school>
+                            <cv-location>{school.location}</cv-location>
+                            <cv-thesis>{/* icon:github */}<a href={school.thesis.url}>{school.thesis.description}</a></cv-thesis>
+                            <cv-gpa-overall-results>{school.gpa_overall_results}</cv-gpa-overall-results>
+                            <ul>
+                                {school.details.map((detail, index) => (
+                                    <li key={index}>{detail}</li>
+                                ))}
+                            </ul>
+                        </dd>
+                    </React.Fragment>
+                ))}
+            </dl>
+        );
+    }
+
     render() {
         // TODO: Don't use the inline conditional, separate out into variables
         return (
@@ -261,25 +304,7 @@ class CVEducation extends Component {
                 <h2>Education</h2>
                 {(this.state.apiFetchCompleted) ? (
                     (this.state.schools) ? (
-                        <dl>
-                            {this.state.schools.map((school, index) => (
-                                <React.Fragment key={index}>
-                                    <dt><cv-date-circa>{school.date}</cv-date-circa></dt>
-                                    <dd>
-                                        <cv-degree>{school.degree}</cv-degree>
-                                        <cv-school>{school.degree}</cv-school>
-                                        <cv-location>{school.location}</cv-location>
-                                        <cv-thesis>{/* icon:github */}<a href={school.thesis.url}>{school.thesis.description}</a></cv-thesis>
-                                        <cv-gpa-overall-results>{school.gpa_overall_results}</cv-gpa-overall-results>
-                                        <ul>
-                                            {school.details.map((detail, index) => (
-                                                <li key={index}>{detail}</li>
-                                            ))}
-                                        </ul>
-                                    </dd>
-                                </React.Fragment>
-                            ))}
-                        </dl>
+                        this.generateElemsWithApiResults()
                     ) : (
                         <div className='api-failure'>
                             {this.state.apiFetchFailureMessage}
@@ -346,6 +371,26 @@ class CVCommunity extends Component {
         await fetchFromApi.call(this, '/cv/memberships', 'memberships');
     }
 
+    generateElemsWithApiResults() {
+        return (
+            <dl>
+                {this.state.memberships.map((membership, index) => (
+                    <React.Fragment key={index}>
+                        <dt><cv-organization>{membership.organization}</cv-organization></dt>
+                        <dd>
+                            <cv-date-circa>{membership.date}</cv-date-circa>
+                            <ul>
+                                {membership.details.map((detail, index) => (
+                                    <li key={index}>{detail}</li>
+                                ))}
+                            </ul>
+                        </dd>
+                    </React.Fragment>
+                ))}
+            </dl>
+        );
+    }
+
     render() {
         // TODO: Don't use the inline conditional, separate out into variables
         return (
@@ -353,21 +398,7 @@ class CVCommunity extends Component {
                 <h2>Professional Memberships and Certifications</h2>
                 {(this.state.apiFetchCompleted) ? (
                     (this.state.memberships) ? (
-                        <dl>
-                            {this.state.memberships.map((membership, index) => (
-                                <React.Fragment key={index}>
-                                    <dt><cv-organization>{membership.organization}</cv-organization></dt>
-                                    <dd>
-                                        <cv-date-circa>{membership.date}</cv-date-circa>
-                                        <ul>
-                                            {membership.details.map((detail, index) => (
-                                                <li key={index}>{detail}</li>
-                                            ))}
-                                        </ul>
-                                    </dd>
-                                </React.Fragment>
-                            ))}
-                        </dl>
+                        this.generateElemsWithApiResults()
                     ) : (
                         <div className='api-failure'>
                             {this.state.apiFetchFailureMessage}
@@ -393,6 +424,25 @@ class CVSkills extends Component {
         await fetchFromApi.call(this, '/cv/skills', 'skills');
     }
 
+    generateElemsWithApiResults() {
+        return (
+            <dl>
+                {this.state.skills.map((skill, index) => (
+                    <React.Fragment key={index}>
+                        <dt>{skill.skill}</dt>
+                        <dd>
+                            <ul>
+                                {skill.details.map((detail, index) => (
+                                    <li key={index}>{detail}</li>
+                                ))}
+                            </ul>
+                        </dd>
+                    </React.Fragment>
+                ))}
+            </dl>
+        );
+    }
+
     render() {
         // TODO: Don't use the inline conditional, separate out into variables
         return (
@@ -400,20 +450,7 @@ class CVSkills extends Component {
                 <h2>Technical Skills</h2>
                 {(this.state.apiFetchCompleted) ? (
                     (this.state.skills) ? (
-                        <dl>
-                            {this.state.skills.map((skill, index) => (
-                                <React.Fragment key={index}>
-                                    <dt>{skill.skill}</dt>
-                                    <dd>
-                                        <ul>
-                                            {skill.details.map((detail, index) => (
-                                                <li key={index}>{detail}</li>
-                                            ))}
-                                        </ul>
-                                    </dd>
-                                </React.Fragment>
-                            ))}
-                        </dl>
+                        this.generateElemsWithApiResults()
                     ) : (
                         <div className='api-failure'>
                             {this.state.apiFetchFailureMessage}
