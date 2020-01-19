@@ -1,4 +1,7 @@
 import React, {Component} from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGithub, faGitlab, faBitbucket, faDigitalOcean, faDocker, faNpm, faCodepen, faFreeCodeCamp, faDev, faMedium } from '@fortawesome/free-brands-svg-icons'
+import { faCode } from '@fortawesome/free-solid-svg-icons';
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 async function fetchFromApi(endpoint, apiResultProp, isText = false) {
@@ -139,6 +142,19 @@ class CVContactHeader extends Component {
     }
 }
 
+/*
+{
+    email: 'andrew@andreweast.net',
+    location: 'Galway, Ireland',
+    portfolio: 'andreweast.net/portfolio',
+    github: 'reideast',
+    linkedin: 'andrewreideast',
+    twitter: 'deskase',
+    aboutme: 'andrewreideast',
+    facebook: '' // This is an example of a service which the person is not using
+    // TODO: What other services could be available here?
+}
+ */
 // {/* icon:email */}
 // {/* icon:globe/location */}
 // {/* icon:portfolio */}
@@ -253,7 +269,7 @@ class CVEducation extends Component {
                             <cv-degree>{school.degree}</cv-degree>
                             <cv-school>{school.degree}</cv-school>
                             <cv-location>{school.location}</cv-location>
-                            <cv-thesis>{/* icon:github */}<a href={school.thesis.url}>{school.thesis.description}</a></cv-thesis>
+                            <cv-thesis><Project url={school.thesis.url} description={school.thesis.description} /></cv-thesis>
                             <cv-gpa-overall-results>{school.gpa_overall_results}</cv-gpa-overall-results>
                             <ul>
                                 {school.details.map((detail, index) => (
@@ -274,6 +290,38 @@ class CVEducation extends Component {
                 {generateApiLoadingOrElements.call(this, 'schools', this.generateElemsWithApiResults)}
             </section>
         );
+    }
+}
+
+class Project extends Component {
+    render() {
+        let icon;
+        if (this.props.url.includes('github')) {
+            icon = <FontAwesomeIcon icon={faGithub} />;
+        } else if (this.props.url.includes('gitlab')) {
+            icon = <FontAwesomeIcon icon={faGitlab} />;
+        } else if (this.props.url.includes('bitbucket')) {
+            icon = <FontAwesomeIcon icon={faBitbucket} />;
+        } else if (this.props.url.includes('digitalocean')) {
+            icon = <FontAwesomeIcon icon={faDigitalOcean} />;
+        } else if (this.props.url.includes('hub.docker')) {
+            icon = <FontAwesomeIcon icon={faDocker} />;
+        } else if (this.props.url.includes('npm')) {
+            icon = <FontAwesomeIcon icon={faNpm} />;
+        } else if (this.props.url.includes('codepen')) {
+            icon = <FontAwesomeIcon icon={faCodepen} />;
+        } else if (this.props.url.includes('freecodecamp')) {
+            icon = <FontAwesomeIcon icon={faFreeCodeCamp} />;
+        } else if (this.props.url.includes('dev.to')) {
+            icon = <FontAwesomeIcon icon={faDev} />;
+        } else if (this.props.url.includes('medium')) {
+            icon = <FontAwesomeIcon icon={faMedium} />;
+        } else {
+            icon = <FontAwesomeIcon icon={faCode} />;
+        }
+        return (
+            <a href={this.props.url}>{ icon } { this.props.description }</a>
+        )
     }
 }
 
