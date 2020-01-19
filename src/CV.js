@@ -1,12 +1,37 @@
 import React, {Component} from 'react';
 
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+async function fetchFromApi(endpoint, apiResultProp, isText = false) {
+    try {
+        const res = await fetch(REACT_APP_API_URL + endpoint);
+        if (res.status >= 400) {
+            throw new Error('API Failure');
+        }
+        const result = isText ? await res.text() : await res.json();
+        this.setState({ [apiResultProp]: result, apiFetchCompleted: true });
+    } catch (err) {
+        this.setState({ apiFetchFailureMessage: 'API fetch failure', apiFetchCompleted: true });
+    }
+}
+
+function generateApiLoadingOrElements(apiResultsProp, elementGeneratorFunction) {
+    return (
+        (this.state.apiFetchCompleted) ? (
+            (this.state[apiResultsProp]) ? (
+                elementGeneratorFunction.call(this)
+            ) : (
+                <div className='api-failure'>
+                    {this.state.apiFetchFailureMessage}
+                </div>
+            )
+        ) : (
+            <div>Loading...</div>
+        )
+    );
+}
+
 // Resume/CV using CSS Grid, see: https://css-tricks.com/new-year-new-job-lets-make-a-grid-powered-resume/
 export class CV extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
-    }
-
     render() {
         return (
             <main id='cv-wrapper'>
@@ -25,10 +50,29 @@ export class CV extends Component {
 }
 
 export class CVName extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            name: null
+        };
+    }
+
+    async componentDidMount() {
+        await fetchFromApi.call(this, '/cv/name', 'name', true);
+    }
+
+    generateElemsWithApiResults() {
+        return (
+            this.state.name
+        );
+    }
+
     render() {
         return (
             <section className='cv-grid-section-name cv-grid-section'>
-                <h1>Andrew Reid East</h1>
+                <h1>
+                    {generateApiLoadingOrElements.call(this, 'name', this.generateElemsWithApiResults)}
+                </h1>
                 <CVContactHeader />
             </section>
         );
@@ -36,22 +80,73 @@ export class CVName extends Component {
 }
 
 class CVContactHeader extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            contacts: null,
+        };
+    }
+
+    async componentDidMount() {
+        await fetchFromApi.call(this, '/cv/contacts', 'contacts');
+    }
+
+    generateElemsWithApiResults() {
+        return (
+            (this.state.contacts.email) ? (
+                <cv-email>this.state.contacts.email</cv-email>
+            ) : '') + (
+            (this.state.contacts.location) ? (
+                <cv-location>this.state.contacts.location</cv-location>
+            ) : '') + (
+            (this.state.contacts.portfolio) ? (
+                <cv-portfolio>this.state.contacts.portfolio</cv-portfolio>
+            ) : '') + (
+            (this.state.contacts.github) ? (
+                <cv-github><a href={'https://github.com/' + this.state.contacts.github}>
+                    this.state.contacts.github
+                </a></cv-github>
+            ) : '') + (
+            (this.state.contacts.linkedin) ? (
+                <cv-linkedin><a href={'https://linkedin.com/in/' + this.state.contacts.linkedin}>
+                    this.state.contacts.linkedin
+                </a></cv-linkedin>
+            ) : '') + (
+            (this.state.contacts.twitter) ? (
+                <cv-twitter><a href={'https://twitter.com/' + this.state.contacts.twitter}>
+                    this.state.contacts.twitter
+                </a></cv-twitter>
+            ) : '') + (
+            (this.state.contacts.aboutme) ? (
+                <cv-aboutme><a href={'https://aboutme.com/' + this.state.contacts.aboutme}>
+                    this.state.contacts.aboutme
+                </a></cv-aboutme>
+            ) : '') + (
+            (this.state.contacts.facebook) ? (
+                <cv-facebook><a href={'https://facebook.com/' + this.state.contacts.facebook}>
+                    this.state.contacts.facebook
+                </a></cv-facebook>
+            ) : ''
+        );
+    }
+
     render() {
         return (
-            <div>
-                <cv-contacts>
-                    <cv-email>{/* icon:email */}andrew@andreweast.net</cv-email>
-                    <cv-location>{/* icon:globe/location */}Galway, Ireland</cv-location>
-                    <cv-web-portfolio>{/* icon:email */}andreweast.net/portfolio</cv-web-portfolio>
-                    <cv-web-github>{/* icon:github */}github.com/reideast</cv-web-github>
-                    <cv-web-linkedin>{/* icon:linkedin */}linkedin.com/in/andrewreideast</cv-web-linkedin>
-                    <cv-web-twitter>{/* icon:twitter */}deskase</cv-web-twitter>
-                    <cv-web-aboutme>{/* icon:aboutme */}andrewreideast</cv-web-aboutme>
-                </cv-contacts>
-            </div>
+            <section className='cv-grid-section-about cv-grid-section'>
+                {generateApiLoadingOrElements.call(this, 'contacts', this.generateElemsWithApiResults)}
+            </section>
         );
     }
 }
+
+// {/* icon:email */}
+// {/* icon:globe/location */}
+// {/* icon:portfolio */}
+// {/* icon:github */}
+// {/* icon:linkedin */}
+// {/* icon:twitter */}
+// {/* icon:aboutme */}
+
 
 class CVPhoto extends Component {
     render() {
@@ -64,158 +159,127 @@ class CVPhoto extends Component {
 }
 
 class CVAbout extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            aboutLines: null
+        };
+    }
+
+    async componentDidMount() {
+        await fetchFromApi.call(this, '/cv/about', 'aboutLines');
+    }
+
+    generateElemsWithApiResults() {
+        return (
+            this.state.aboutLines.map((line, index) => (
+                <p key={index}>{line}</p>
+            ))
+        );
+    }
+
     render() {
         return (
             <section className='cv-grid-section-about cv-grid-section'>
-                <p>Hello world, I'm Andrew. I like coding, I'm nerdy about a lot of stuff, and I putting together this web site now!</p>
-                <p>Graduate software engineer with a lifelong enthusiasm for coding along with ten years of proven IT experience</p>
+                {generateApiLoadingOrElements.call(this, 'aboutLines', this.generateElemsWithApiResults)}
             </section>
         );
     }
 }
 
 class CVWorkExperience extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            jobs: null
+        };
+    }
+
+    async componentDidMount() {
+        await fetchFromApi.call(this, '/cv/job', 'jobs');
+    }
+
+    generateElemsWithApiResults() {
+        return (
+            <dl>
+                {this.state.jobs.map((job, index) => (
+                    <React.Fragment key={index}>
+                        <dt><cv-date-circa>{job.date}</cv-date-circa></dt>
+                        <dd>
+                            <cv-company>{job.company}</cv-company>
+                            <cv-job-title>{job.title}</cv-job-title>
+                            <cv-location>{job.location}</cv-location>
+                            <ul>
+                                {job.details.map((detail, index) => (
+                                    <li key={index}>{detail}</li>
+                                ))}
+                            </ul>
+                        </dd>
+                    </React.Fragment>
+                ))}
+            </dl>
+        );
+    }
+
     render() {
         return (
             <section className='cv-grid-section-work cv-grid-section'>
                 <h2>Work Experience</h2>
-                <dl>
-                    <dt><cv-date-circa>2019-Current</cv-date-circa></dt>
-                    <dd>
-                        <cv-company>IBM</cv-company>
-                        <cv-job-title>Software Engineer</cv-job-title>
-                        <cv-location>Galway, Ireland</cv-location>
-                        <ul>
-                            <li>Development of enterprise security management software</li>
-                        </ul>
-                    </dd>
-                    <dt><cv-date-circa>2018-2019</cv-date-circa></dt>
-                    <dd>
-                        <cv-company>IBM</cv-company>
-                        <cv-job-title>Software Engineering Intern</cv-job-title>
-                        <cv-location>Galway, Ireland</cv-location>
-                        <ul>
-                            <li>Developed a Java EE app presented in a TypeScript frontend in an international team</li>
-                            <li>Wrote a Java service deployed using Apache Common Daemon</li>
-                            <li>Created automated end-to-end test harness to verify SSL connections & certificates</li>
-                            <li>Developed automated UI tests in Selenium, API tests in Spock, Unit tests in Junit & Jasmine</li>
-                            <li>Created fixes for frontend defects in the Marionette framework</li>
-                        </ul>
-                    </dd>
-                    <dt><cv-date-circa>2017-2017</cv-date-circa></dt>
-                    <dd>
-                        <cv-company>Ericsson LMI</cv-company>
-                        <cv-job-title>Software Engineering Intern</cv-job-title>
-                        <cv-location>Athlone, Ireland</cv-location>
-                        <ul>
-                            <li>Worked on an agile team on a JavaScript and JavaEE on the Ericsson Network Manager</li>
-                            <li>Developed production stories for GUI frontend, merged after code review</li>
-                            <li>Wrote behaviour-driven automated UI tests</li>
-                        </ul>
-                    </dd>
-                    <dt><cv-date-circa>2012-2015</cv-date-circa></dt>
-                    <dd>
-                        <cv-company>Tech Data</cv-company>
-                        <cv-job-title>Quality Assurance Technician II</cv-job-title>
-                        <cv-location>California, United States</cv-location>
-                        <ul>
-                            <li>Developed scripts to automate technician’s workflows. Took initiative to identify inefficiencies, proposed improvement to management, and implemented it</li>
-                            <li>Wrote automated installation script to customise applications on domain PCs, increasing production throughput, directly leading to increase larger in contract size</li>
-                            <li>Responsible for ISO standards of 5-10 techs assembling desktop, laptop, server, and networking hardware, deploying system software</li>
-                        </ul>
-                    </dd>
-                    <dt><cv-date-circa>2009-2012</cv-date-circa></dt>
-                    <dd>
-                        <cv-company>Office Depot, Inc.</cv-company>
-                        <cv-job-title>Customer Services Specialist II</cv-job-title>
-                        <cv-location>California, United States</cv-location>
-                        <ul>
-                            <li>Innovated by implementing new diagnostic protocols for services sales team using PC Doctor tool and directly increased sales of hardware repair services</li>
-                            <li>Designed improved marketing materials for customer check in district-wide, streamlined customer process and increased sales of add-on services</li>
-                        </ul>
-                    </dd>
-                    <dt><cv-date-circa>2007-2009</cv-date-circa></dt>
-                    <dd>
-                        <cv-company>Circuit City</cv-company>
-                        <cv-job-title>Lead PC Technician</cv-job-title>
-                        <cv-location>California, United States</cv-location>
-                        <ul>
-                            <li>Managed technical service centre operations after promotion within three months</li>
-                            <li>Developed new procedures to improve technician standard operating procedures, designed to keep personnel focused on repairs and customer communication</li>
-                        </ul>
-                    </dd>
-                    <dt><cv-date-circa>2005-2007</cv-date-circa></dt>
-                    <dd>
-                        <cv-company>CompUSA</cv-company>
-                        <cv-job-title>Service Writer</cv-job-title>
-                        <cv-location>California, United States</cv-location>
-                        <ul>
-                            <li>Provided first level help desk support with retail customers in person and over the phone</li>
-                            <li>Trained by technicians for hardware and software repairs of PC and Apple computers</li>
-                        </ul>
-                    </dd>
-                    <dt><cv-date-circa>2003-2004</cv-date-circa></dt>
-                    <dd>
-                        <cv-company>San Diego Zoological Society's Wild Animal Park</cv-company>
-                        <cv-job-title>Visitor Assistance Officer</cv-job-title>
-                        <cv-location>California, United States</cv-location>
-                        <ul>
-                            <li>Customer service and crowd control</li>
-                            <li>Junior security duties</li>
-                            <li>Fed giraffes</li>
-                        </ul>
-                    </dd>
-                </dl>
+                {generateApiLoadingOrElements.call(this, 'jobs', this.generateElemsWithApiResults)}
             </section>
         );
     }
 }
 
 class CVEducation extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            schools: null
+        };
+    }
+
+    async componentDidMount() {
+        await fetchFromApi.call(this, '/cv/schools', 'schools');
+    }
+
+    generateElemsWithApiResults() {
+        return (
+            <dl>
+                {this.state.schools.map((school, index) => (
+                    <React.Fragment key={index}>
+                        <dt><cv-date-circa>{school.date}</cv-date-circa></dt>
+                        <dd>
+                            <cv-degree>{school.degree}</cv-degree>
+                            <cv-school>{school.degree}</cv-school>
+                            <cv-location>{school.location}</cv-location>
+                            <cv-thesis>{/* icon:github */}<a href={school.thesis.url}>{school.thesis.description}</a></cv-thesis>
+                            <cv-gpa-overall-results>{school.gpa_overall_results}</cv-gpa-overall-results>
+                            <ul>
+                                {school.details.map((detail, index) => (
+                                    <li key={index}>{detail}</li>
+                                ))}
+                            </ul>
+                        </dd>
+                    </React.Fragment>
+                ))}
+            </dl>
+        );
+    }
+
     render() {
         return (
             <section className='cv-grid-section-education cv-grid-section'>
                 <h2>Education</h2>
-                <dl>
-                    <dt><cv-date-circa>2016-2019</cv-date-circa></dt>
-                    <dd>
-                        <cv-degree>Bachelor of Science (Honours), Computer Science</cv-degree>
-                        <cv-school>National University of Ireland, Galway</cv-school>
-                        <cv-location>Galway, Ireland</cv-location>
-                        <cv-thesis>{/* icon:github */}Thesis Project: Genetic algorithm to schedule a timetable using machine learning in Java EE presented as a React app deployed to AWS, EC2, and an RDS Postgres database</cv-thesis>
-                        <cv-grades>First-class Honours: overall marks 90.18% (A+ equivalent)</cv-grades>
-                        <ul>
-                            <li>Java Data Structures & Algorithms A</li>
-                            <li>Software Engineering A+</li>
-                            <li>Databases A+</li>
-                            <li>Discrete Maths A+</li>
-                            <li>AI A</li>
-                            <li>Machine Learning A+</li>
-                            <li>Cryptography A+</li>
-                        </ul>
-                    </dd>
-                    <dt><cv-date-circa>2014-2015</cv-date-circa></dt>
-                    <dd>
-                        <cv-degree>Associate of Science, Computer Science</cv-degree>
-                        <cv-school>Riverside City College</cv-school>
-                        <cv-location>California, United States</cv-location>
-                        <cv-thesis>{/* icon:github */}Dean's List Honours: (Overall 97.8%)</cv-thesis>
-                        <cv-grades>Searchable database web app in PHP and MySQL</cv-grades>
-                        <ul>
-                            <li>Systems Analysis</li>
-                            <li>Programming in C++</li>
-                            <li>Java</li>
-                            <li>PHP</li>
-                            <li>Operating Systems</li>
-                            <li>Data Structures</li>
-                            <li>Cisco Networking Academy</li>
-                        </ul>
-                    </dd>
-                </dl>
+                {generateApiLoadingOrElements.call(this, 'schools', this.generateElemsWithApiResults)}
             </section>
         );
     }
 }
+
+// TODO: component for a project, e.g. github or personal profile etc.
+// TODO:     It will extract the base URL to determine the icon to show
+// TODO:     nice things: it's reusable for Education, Projects, etc.
 
 // class CVProjects extends Component {
 //     render() {
@@ -255,88 +319,83 @@ Flexible <strong>team player</strong> able to work effectively in a large team o
  */
 
 class CVCommunity extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            memberships: null
+        };
+    }
+
+    async componentDidMount() {
+        await fetchFromApi.call(this, '/cv/memberships', 'memberships');
+    }
+
+    generateElemsWithApiResults() {
+        return (
+            <dl>
+                {this.state.memberships.map((membership, index) => (
+                    <React.Fragment key={index}>
+                        <dt><cv-organization>{membership.organization}</cv-organization></dt>
+                        <dd>
+                            <cv-date-circa>{membership.date}</cv-date-circa>
+                            <ul>
+                                {membership.details.map((detail, index) => (
+                                    <li key={index}>{detail}</li>
+                                ))}
+                            </ul>
+                        </dd>
+                    </React.Fragment>
+                ))}
+            </dl>
+        );
+    }
+
     render() {
         return (
             <section className='cv-grid-section-community cv-grid-section'>
                 <h2>Professional Memberships and Certifications</h2>
-                <dl>
-                    <dt><cv-organization>Association for Computing Machinery (ACM)</cv-organization></dt>
-                    <dd><cv-date-circa>since 2015</cv-date-circa></dd>
-                    <dt>Google Developers Group Galway</dt>
-                    <dt>CompSoc, Vice-Auditor NUI Galway</dt>
-                    <dt>Digital Champions, NUI Galway</dt>
-                    <dd>Cisco Certified Networking Associate (CCNA)</dd>
-                    <dt>
-                        <cv-date-circa>2013</cv-date-circa>
-                        <div>Routing and Switching</div>
-                    </dt>
-                    <dd>CompTIA A+ Certification</dd>
-                    <dt>
-                        <cv-date-circa>Computer Technician</cv-date-circa>
-                        <div>2011</div>
-                    </dt>
-                </dl>
+                {generateApiLoadingOrElements.call(this, 'memberships', this.generateElemsWithApiResults)}
             </section>
         );
     }
 }
 
 class CVSkills extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            skills: null
+        };
+    }
+
+    async componentDidMount() {
+        await fetchFromApi.call(this, '/cv/skills', 'skills');
+    }
+
+    generateElemsWithApiResults() {
+        return (
+            <dl>
+                {this.state.skills.map((skill, index) => (
+                    <React.Fragment key={index}>
+                        <dt>{skill.skill}</dt>
+                        <dd>
+                            <ul>
+                                {skill.details.map((detail, index) => (
+                                    <li key={index}>{detail}</li>
+                                ))}
+                            </ul>
+                        </dd>
+                    </React.Fragment>
+                ))}
+            </dl>
+        );
+    }
+
     render() {
         return (
             <section className='cv-grid-section-skills cv-grid-section'>
                 <h2>Technical Skills</h2>
-                <dl>
-                    <dt>Programming Languages</dt>
-                    <dd>
-                        <ul>
-                            <li>Java</li>
-                            <li>JavaScript</li>
-                            <li>Python</li>
-                            <li>React</li>
-                            <li>TypeScript</li>
-                            <li>Node.js</li>
-                            <li>HTML</li>
-                            <li>CSS</li>
-                            <li>PostgreSQL</li>
-                            <li>C</li>
-                            <li>bash</li>
-                        </ul>
-                    </dd>
-                    <dt>Coding tools</dt>
-                    <dd>
-                        <ul>
-                            <li>git</li>
-                            <li>vim</li>
-                            <li>AWS</li>
-                            <li>IntelliJ</li>
-                            <li>Gradle</li>
-                            <li>Jira</li>
-                        </ul>
-                    </dd>
-                    <dt>IT Systems Admin</dt>
-                    <dd>
-                        <ul>
-                            <li>Windows 10,8,7,XP</li>
-                            <li>Windows Server 2012</li>
-                            <li>RHEL</li>
-                            <li>CentOS</li>
-                            <li>Cisco hardware & IOS</li>
-                            <li>Rack-mount server hardware</li>
-                        </ul>
-                    </dd>
-                    <dt>Office Skills</dt>
-                    <dd>
-                        <ul>
-                            <li>Excel</li>
-                            <li>Access</li>
-                            <li>Publisher</li>
-                            <li>Word</li>
-                            <li>Visio</li>
-                            <li>Typing 80 WPM</li>
-                        </ul>
-                    </dd>
-                </dl>
+                {generateApiLoadingOrElements.call(this, 'skills', this.generateElemsWithApiResults)}
             </section>
         );
     }
