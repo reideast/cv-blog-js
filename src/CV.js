@@ -10,9 +10,24 @@ async function fetchFromApi(endpoint, apiResultProp, isText = false) {
         const result = isText ? await res.text() : await res.json();
         this.setState({ [apiResultProp]: result, apiFetchCompleted: true });
     } catch (err) {
-        console.error('API fetch failure', err); // DEBUG
         this.setState({ apiFetchFailureMessage: 'API fetch failure', apiFetchCompleted: true });
     }
+}
+
+function generateApiLoadingOrElements(apiResultsProp, elementGeneratorFunction) {
+    return (
+        (this.state.apiFetchCompleted) ? (
+            (this.state[apiResultsProp]) ? (
+                elementGeneratorFunction.call(this)
+            ) : (
+                <div className='api-failure'>
+                    {this.state.apiFetchFailureMessage}
+                </div>
+            )
+        ) : (
+            <div>Loading...</div>
+        )
+    );
 }
 
 // Resume/CV using CSS Grid, see: https://css-tricks.com/new-year-new-job-lets-make-a-grid-powered-resume/
@@ -53,21 +68,10 @@ export class CVName extends Component {
     }
 
     render() {
-        // TODO: Don't use the inline conditional, separate out into variables
         return (
             <section className='cv-grid-section-name cv-grid-section'>
                 <h1>
-                    {(this.state.apiFetchCompleted) ? (
-                        (this.state.name) ? (
-                            this.generateElemsWithApiResults()
-                        ) : (
-                            <div className='api-failure'>
-                                {this.state.apiFetchFailureMessage}
-                            </div>
-                        )
-                    ) : (
-                        <div>Loading...</div>
-                    )}
+                    {generateApiLoadingOrElements.call(this, 'name', this.generateElemsWithApiResults)}
                 </h1>
                 <CVContactHeader />
             </section>
@@ -127,20 +131,9 @@ class CVContactHeader extends Component {
     }
 
     render() {
-        // TODO: Don't use the inline conditional, separate out into variables
         return (
             <section className='cv-grid-section-about cv-grid-section'>
-                {(this.state.apiFetchCompleted) ? (
-                    (this.state.contacts) ? (
-                        this.generateElemsWithApiResults()
-                    ) : (
-                        <div className='api-failure'>
-                            {this.state.apiFetchFailureMessage}
-                        </div>
-                    )
-                ) : (
-                    <div>Loading...</div>
-                )}
+                {generateApiLoadingOrElements.call(this, 'contacts', this.generateElemsWithApiResults)}
             </section>
         );
     }
@@ -186,20 +179,9 @@ class CVAbout extends Component {
     }
 
     render() {
-        // TODO: Don't use the inline conditional, separate out into variables
         return (
             <section className='cv-grid-section-about cv-grid-section'>
-                {(this.state.apiFetchCompleted) ? (
-                    (this.state.aboutLines) ? (
-                        this.generateElemsWithApiResults()
-                    ) : (
-                        <div className='api-failure'>
-                            {this.state.apiFetchFailureMessage}
-                        </div>
-                    )
-                ) : (
-                    <div>Loading...</div>
-                )}
+                {generateApiLoadingOrElements.call(this, 'aboutLines', this.generateElemsWithApiResults)}
             </section>
         );
     }
@@ -240,22 +222,10 @@ class CVWorkExperience extends Component {
     }
 
     render() {
-        // Looping over JSON to make DOM elements, See: https://reactjs.org/docs/getting-started.html
-        // TODO: Don't use the inline conditional, separate out into variables
         return (
             <section className='cv-grid-section-work cv-grid-section'>
                 <h2>Work Experience</h2>
-                {(this.state.apiFetchCompleted) ? (
-                    (this.state.jobs) ? (
-                        this.generateElemsWithApiResults()
-                    ) : (
-                        <div className='api-failure'>
-                            {this.state.apiFetchFailureMessage}
-                        </div>
-                    )
-                ) : (
-                    <div>Loading...</div>
-                )}
+                {generateApiLoadingOrElements.call(this, 'jobs', this.generateElemsWithApiResults)}
             </section>
         );
     }
@@ -298,21 +268,10 @@ class CVEducation extends Component {
     }
 
     render() {
-        // TODO: Don't use the inline conditional, separate out into variables
         return (
             <section className='cv-grid-section-education cv-grid-section'>
                 <h2>Education</h2>
-                {(this.state.apiFetchCompleted) ? (
-                    (this.state.schools) ? (
-                        this.generateElemsWithApiResults()
-                    ) : (
-                        <div className='api-failure'>
-                            {this.state.apiFetchFailureMessage}
-                        </div>
-                    )
-                ) : (
-                    <div>Loading...</div>
-                )}
+                {generateApiLoadingOrElements.call(this, 'schools', this.generateElemsWithApiResults)}
             </section>
         );
     }
@@ -392,21 +351,10 @@ class CVCommunity extends Component {
     }
 
     render() {
-        // TODO: Don't use the inline conditional, separate out into variables
         return (
             <section className='cv-grid-section-community cv-grid-section'>
                 <h2>Professional Memberships and Certifications</h2>
-                {(this.state.apiFetchCompleted) ? (
-                    (this.state.memberships) ? (
-                        this.generateElemsWithApiResults()
-                    ) : (
-                        <div className='api-failure'>
-                            {this.state.apiFetchFailureMessage}
-                        </div>
-                    )
-                ) : (
-                    <div>Loading...</div>
-                )}
+                {generateApiLoadingOrElements.call(this, 'memberships', this.generateElemsWithApiResults)}
             </section>
         );
     }
@@ -444,21 +392,10 @@ class CVSkills extends Component {
     }
 
     render() {
-        // TODO: Don't use the inline conditional, separate out into variables
         return (
             <section className='cv-grid-section-skills cv-grid-section'>
                 <h2>Technical Skills</h2>
-                {(this.state.apiFetchCompleted) ? (
-                    (this.state.skills) ? (
-                        this.generateElemsWithApiResults()
-                    ) : (
-                        <div className='api-failure'>
-                            {this.state.apiFetchFailureMessage}
-                        </div>
-                    )
-                ) : (
-                    <div>Loading...</div>
-                )}
+                {generateApiLoadingOrElements.call(this, 'skills', this.generateElemsWithApiResults)}
             </section>
         );
     }
