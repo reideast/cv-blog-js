@@ -154,6 +154,10 @@ cv-location {
     grid-area: skills;
 }
 
+.inline-icon-link {
+
+}
+
 /* API status messages */
 .api-failure {
     color: darkred;

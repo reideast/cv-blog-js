@@ -1,7 +1,5 @@
-import React, {Component} from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGithub, faGitlab, faBitbucket, faDigitalOcean, faDocker, faNpm, faCodepen, faFreeCodeCamp, faDev, faMedium } from '@fortawesome/free-brands-svg-icons'
-import { faCode } from '@fortawesome/free-solid-svg-icons';
+import React, { Component } from 'react';
+import { CodeProject } from './cv/CodeProject';
 
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 async function fetchFromApi(endpoint, apiResultProp, isText = false) {
@@ -269,7 +267,7 @@ class CVEducation extends Component {
                             <cv-degree>{school.degree}</cv-degree>
                             <cv-school>{school.degree}</cv-school>
                             <cv-location>{school.location}</cv-location>
-                            <cv-thesis><Project url={school.thesis.url} description={school.thesis.description} /></cv-thesis>
+                            <cv-thesis><CodeProject url={school.thesis.url} description={school.thesis.description} /></cv-thesis>
                             <cv-gpa-overall-results>{school.gpa_overall_results}</cv-gpa-overall-results>
                             <ul>
                                 {school.details.map((detail, index) => (
@@ -292,42 +290,6 @@ class CVEducation extends Component {
         );
     }
 }
-
-class Project extends Component {
-    render() {
-        let icon;
-        if (this.props.url.includes('github')) {
-            icon = <FontAwesomeIcon icon={faGithub} />;
-        } else if (this.props.url.includes('gitlab')) {
-            icon = <FontAwesomeIcon icon={faGitlab} />;
-        } else if (this.props.url.includes('bitbucket')) {
-            icon = <FontAwesomeIcon icon={faBitbucket} />;
-        } else if (this.props.url.includes('digitalocean')) {
-            icon = <FontAwesomeIcon icon={faDigitalOcean} />;
-        } else if (this.props.url.includes('hub.docker')) {
-            icon = <FontAwesomeIcon icon={faDocker} />;
-        } else if (this.props.url.includes('npm')) {
-            icon = <FontAwesomeIcon icon={faNpm} />;
-        } else if (this.props.url.includes('codepen')) {
-            icon = <FontAwesomeIcon icon={faCodepen} />;
-        } else if (this.props.url.includes('freecodecamp')) {
-            icon = <FontAwesomeIcon icon={faFreeCodeCamp} />;
-        } else if (this.props.url.includes('dev.to')) {
-            icon = <FontAwesomeIcon icon={faDev} />;
-        } else if (this.props.url.includes('medium')) {
-            icon = <FontAwesomeIcon icon={faMedium} />;
-        } else {
-            icon = <FontAwesomeIcon icon={faCode} />;
-        }
-        return (
-            <a href={this.props.url}>{ icon } { this.props.description }</a>
-        )
-    }
-}
-
-// TODO: component for a project, e.g. github or personal profile etc.
-// TODO:     It will extract the base URL to determine the icon to show
-// TODO:     nice things: it's reusable for Education, Projects, etc.
 
 // class CVProjects extends Component {
 //     render() {
