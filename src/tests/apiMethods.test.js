@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { generateApiLoadingOrElements } from '../apiMethods';
 
-it('displays loading while fetch is in progress', () => {
+it('emits a loading DOM element while fetch is in progress', () => {
     let obj = {
         state: {
             apiFetchCompleted: false
@@ -11,9 +11,10 @@ it('displays loading while fetch is in progress', () => {
     let domObj = generateApiLoadingOrElements.call(obj);
     let wrapper = shallow(domObj);
     expect(wrapper.contains(<div>Loading...</div>)).toBeTruthy();
+    wrapper.unmount();
 });
 
-it('displays an error after a fetch fails', () => {
+it('emits an error DOM element with the specified after a fetch fails', () => {
     let obj = {
         state: {
             apiFetchCompleted: true,
@@ -23,5 +24,25 @@ it('displays an error after a fetch fails', () => {
     };
     let domObj = generateApiLoadingOrElements.call(obj, 'results');
     let wrapper = shallow(domObj);
-    expect(wrapper.contains(<div className='api-failure'>Fetch failed!</div>)).toBeTruthy();
+    expect(wrapper.text()).toContain('Fetch failed!');
+    wrapper.unmount();
+});
+
+it('emits the return value of the generator function when a fetch was successful', () => {
+    let obj = {
+        state: {
+            apiFetchCompleted: true,
+            results: 'Contents!'
+        }
+    };
+    function domGenerator() {
+        return (
+            <div className='myClass'>{this.state.results}</div>
+        );
+    }
+    let domObj = generateApiLoadingOrElements.call(obj, 'results', domGenerator);
+    let wrapper = shallow(domObj);
+    expect(wrapper.find('.myClass').length).toBe(1);
+    expect(wrapper.text()).toContain('Contents!');
+    wrapper.unmount();
 });
