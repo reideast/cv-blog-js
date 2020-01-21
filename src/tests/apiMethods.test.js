@@ -4,10 +4,11 @@ import { fetchFromApi, generateApiLoadingOrElements } from '../apiMethods';
 
 describe('fetchFromApi', () => {
     beforeAll(() => {
-        global.fetch = jest.fn(); // So that it can be used with mockImplementation()
+        global.fetch = jest.fn(); // So that it can be used with mockImplementation(), see: https://jestjs.io/docs/en/jest-object#jestfnimplementation
     });
 
     it('updates state after loading is done', (informThatTestIsDone) => {
+        // Define a fake function to be called instead of fetch(), see https://jestjs.io/docs/en/mock-function-api#mockfnmockimplementationfn
         fetch.mockImplementation(() => {
             return Promise.resolve({
                 status: 200,
@@ -25,8 +26,11 @@ describe('fetchFromApi', () => {
         };
 
         expect(myState.results).toEqual('unchanged');
+        const spyFetch = jest.spyOn(global, 'fetch');
         const returnedPromise = fetchFromApi.call(objThis, 'api/endpoint', 'results', true);
+        expect(spyFetch).toHaveBeenCalled();
         returnedPromise.then(() => {
+            expect(myState.apiFetchCompleted).toBeTruthy();
             expect(myState.results).toEqual('set');
 
             fetch.mockClear();
@@ -34,7 +38,27 @@ describe('fetchFromApi', () => {
         });
     });
 
-    // it('throws an error when fetch() fails'); TODO
+    it('throws an error when fetch() fails', (informThatTestIsDone) => {
+        fetch.mockImplementation(() => {
+            return Promise.resolve({ status: 400 });
+        });
+
+        let myState = { apiFetchFailureMessage: undefined, apiFetchCompleted: false };
+        let objThis = {
+            setState: (newState) => {
+                myState = newState;
+            }
+        };
+        const returnedPromise = fetchFromApi.call(objThis, 'api/endpoint', 'results', true);
+        returnedPromise.then(() => {
+            // Expect that no Error() was thrown, but it was caught and converted to a state change
+            expect(myState.apiFetchCompleted).toBeTruthy();
+            expect(myState.apiFetchFailureMessage).toEqual('API fetch failure');
+
+            fetch.mockClear();
+            informThatTestIsDone();
+        });
+    });
 });
 
 describe('generateApiLoadingOrElements', () => {
