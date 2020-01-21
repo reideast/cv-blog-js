@@ -1,34 +1,6 @@
-import React, {Component} from 'react';
-
-const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
-async function fetchFromApi(endpoint, apiResultProp, isText = false) {
-    try {
-        const res = await fetch(REACT_APP_API_URL + endpoint);
-        if (res.status >= 400) {
-            throw new Error('API Failure');
-        }
-        const result = isText ? await res.text() : await res.json();
-        this.setState({ [apiResultProp]: result, apiFetchCompleted: true });
-    } catch (err) {
-        this.setState({ apiFetchFailureMessage: 'API fetch failure', apiFetchCompleted: true });
-    }
-}
-
-function generateApiLoadingOrElements(apiResultsProp, elementGeneratorFunction) {
-    return (
-        (this.state.apiFetchCompleted) ? (
-            (this.state[apiResultsProp]) ? (
-                elementGeneratorFunction.call(this)
-            ) : (
-                <div className='api-failure'>
-                    {this.state.apiFetchFailureMessage}
-                </div>
-            )
-        ) : (
-            <div>Loading...</div>
-        )
-    );
-}
+import React, { Component } from 'react';
+import { CodeProject } from './CodeProject';
+import { fetchFromApi, generateApiLoadingOrElements } from '../apiMethods';
 
 // Resume/CV using CSS Grid, see: https://css-tricks.com/new-year-new-job-lets-make-a-grid-powered-resume/
 export class CV extends Component {
@@ -139,6 +111,19 @@ class CVContactHeader extends Component {
     }
 }
 
+/*
+{
+    email: 'andrew@andreweast.net',
+    location: 'Galway, Ireland',
+    portfolio: 'andreweast.net/portfolio',
+    github: 'reideast',
+    linkedin: 'andrewreideast',
+    twitter: 'deskase',
+    aboutme: 'andrewreideast',
+    facebook: '' // This is an example of a service which the person is not using
+    // TODO: What other services could be available here?
+}
+ */
 // {/* icon:email */}
 // {/* icon:globe/location */}
 // {/* icon:portfolio */}
@@ -253,7 +238,7 @@ class CVEducation extends Component {
                             <cv-degree>{school.degree}</cv-degree>
                             <cv-school>{school.degree}</cv-school>
                             <cv-location>{school.location}</cv-location>
-                            <cv-thesis>{/* icon:github */}<a href={school.thesis.url}>{school.thesis.description}</a></cv-thesis>
+                            <cv-thesis><CodeProject url={school.thesis.url} description={school.thesis.description} /></cv-thesis>
                             <cv-gpa-overall-results>{school.gpa_overall_results}</cv-gpa-overall-results>
                             <ul>
                                 {school.details.map((detail, index) => (
@@ -276,10 +261,6 @@ class CVEducation extends Component {
         );
     }
 }
-
-// TODO: component for a project, e.g. github or personal profile etc.
-// TODO:     It will extract the base URL to determine the icon to show
-// TODO:     nice things: it's reusable for Education, Projects, etc.
 
 // class CVProjects extends Component {
 //     render() {
