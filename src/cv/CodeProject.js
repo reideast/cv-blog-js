@@ -3,9 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBitbucket, faCodepen, faDev, faDigitalOcean, faDocker, faFreeCodeCamp, faGithub, faGitlab, faMedium, faNpm } from '@fortawesome/free-brands-svg-icons';
 import { faCode } from '@fortawesome/free-solid-svg-icons';
 
-// TODO: component for a project, e.g. github or personal profile etc.
-// TODO:     It will extract the base URL to determine the icon to show
-// TODO:     nice things: it's reusable for Education, Projects, etc.
+/**
+ * Component for a project, e.g. github or personal profile etc.
+ * It will extract the base URL to determine the icon to show
+ * Useful because: it's reusable for Education, Projects, etc.
+ */
 export class CodeProject extends Component {
     render() {
         let url = this.props.url ? this.props.url : '#';
@@ -33,6 +35,7 @@ export class CodeProject extends Component {
         } else {
             icon = <FontAwesomeIcon icon={faCode} />;
         }
+
         return (
             <a href={url} className='inline-icon-link'>{icon} {this.props.description}</a>
         );
