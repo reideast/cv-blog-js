@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { fetchFromApi, generateApiLoadingOrElements } from '../apiMethods';
+import * as myModule from '../apiMethods';
 
 beforeAll(() => {
     global.fetch = jest.fn(); // So that it can be used with mockImplementation()
@@ -24,9 +25,9 @@ it('updates state after loading is done', (informJestThatTestIsDone) => {
     };
     expect(myState.results).toEqual('unchanged');
 
-    // const spy = jst.spyOn(fetchFromApi);
+    const spy = jest.spyOn(myModule, 'fetchFromApi');
     const promiseResult = fetchFromApi.call(objThis, 'api/endpoint', 'results', true);
-    // expect(spy).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
 
     promiseResult.then(() => {
         expect(myState.results).toEqual('set');
