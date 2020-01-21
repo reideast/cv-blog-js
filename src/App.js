@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { CV } from './CV';
+import { CV } from './cv/CV';
 import { TestApi } from './TestApi';
 import './App.css';
 

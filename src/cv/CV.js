@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { CodeProject } from './cv/CodeProject';
-import { fetchFromApi, generateApiLoadingOrElements } from './apiMethods';
+import { CodeProject } from './CodeProject';
+import { fetchFromApi, generateApiLoadingOrElements } from '../apiMethods';
 
 // Resume/CV using CSS Grid, see: https://css-tricks.com/new-year-new-job-lets-make-a-grid-powered-resume/
 export class CV extends Component {
