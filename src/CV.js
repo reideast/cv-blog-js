@@ -1,35 +1,6 @@
 import React, { Component } from 'react';
 import { CodeProject } from './cv/CodeProject';
-
-const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
-async function fetchFromApi(endpoint, apiResultProp, isText = false) {
-    try {
-        const res = await fetch(REACT_APP_API_URL + endpoint);
-        if (res.status >= 400) {
-            throw new Error('API Failure');
-        }
-        const result = isText ? await res.text() : await res.json();
-        this.setState({ [apiResultProp]: result, apiFetchCompleted: true });
-    } catch (err) {
-        this.setState({ apiFetchFailureMessage: 'API fetch failure', apiFetchCompleted: true });
-    }
-}
-
-function generateApiLoadingOrElements(apiResultsProp, elementGeneratorFunction) {
-    return (
-        (this.state.apiFetchCompleted) ? (
-            (this.state[apiResultsProp]) ? (
-                elementGeneratorFunction.call(this)
-            ) : (
-                <div className='api-failure'>
-                    {this.state.apiFetchFailureMessage}
-                </div>
-            )
-        ) : (
-            <div>Loading...</div>
-        )
-    );
-}
+import { fetchFromApi, generateApiLoadingOrElements } from './apiMethods';
 
 // Resume/CV using CSS Grid, see: https://css-tricks.com/new-year-new-job-lets-make-a-grid-powered-resume/
 export class CV extends Component {
