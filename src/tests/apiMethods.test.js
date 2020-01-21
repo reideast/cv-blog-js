@@ -1,6 +1,42 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { generateApiLoadingOrElements } from '../apiMethods';
+import { fetchFromApi, generateApiLoadingOrElements } from '../apiMethods';
+
+beforeAll(() => {
+    global.fetch = jest.fn(); // So that it can be used with mockImplementation()
+});
+
+it('updates state after loading is done', (informJestThatTestIsDone) => {
+    fetch.mockImplementation(() => {
+        return Promise.resolve({
+            status: 200,
+            text: () => {
+                return Promise.resolve('set');
+            }
+        })
+    });
+
+    let myState = { results: 'unchanged', apiFetchCompleted: false };
+    let objThis = {
+        setState: (newState) => {
+            myState = newState;
+        }
+    };
+    expect(myState.results).toEqual('unchanged');
+
+    // const spy = jst.spyOn(fetchFromApi);
+    const promiseResult = fetchFromApi.call(objThis, 'api/endpoint', 'results', true);
+    // expect(spy).toHaveBeenCalled();
+
+    promiseResult.then(() => {
+        expect(myState.results).toEqual('set');
+
+        fetch.mockClear();
+        informJestThatTestIsDone();
+    });
+});
+
+// it('throws an error when fetch() fails'); TODO
 
 it('emits a loading DOM element while fetch is in progress', () => {
     let obj = {
